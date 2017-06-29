@@ -14,4 +14,4 @@ def rooms():
 
 @app.route('/room/<room_id>')
 def single_room(room_id):
-    return render_template('room.html', room_id=room_id)
+    return render_template('room.html', room_id=room_id, room={'video_id': '8GW6sLrK40k'})
