@@ -11,6 +11,13 @@
 
   var ignore = true
 
+  function supress() {
+    ignore = true
+    setTimeout(() => {
+      ignore = false
+    }, 300)
+  }
+
   var room = '{{ room_id }}'
   socket.on('connect', function() {
     socket.emit('join', room);
@@ -31,23 +38,22 @@
         'onStateChange': onPlayerStateChange
       }
     });
+    supress()
   }
 
   socket.on('play', (time) => {
-    console.log(player.getCurrentTime())
     if (Math.abs(player.getCurrentTime() - time) > 3 || player.getPlayerState() != 1) {
-      console.log('Play ' + time)
       player.seekTo(time)
       player.playVideo()
+      supress()
     }
   })
 
   socket.on('pause', (time) => {
-    console.log(player.getCurrentTime())
     if (Math.abs(player.getCurrentTime() - time) > 3 || player.getPlayerState() != 2) {
-      console.log('Pause ' + time)
       player.seekTo(time)
       player.pauseVideo()
+      supress()
     }
   })
 
