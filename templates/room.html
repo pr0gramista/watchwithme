@@ -5,7 +5,17 @@
 <div id="player"></div>
 <div id="chat"></div>
 </section>
+<script type="text/javascript" src="//cdn.socket.io/socket.io-1.4.5.js"></script>
 <script>
+  var socket = io('http://' + document.domain + ':' + location.port);
+
+  var ignore = true
+
+  var room = '{{ room_id }}'
+  socket.on('connect', function() {
+    socket.emit('join', room);
+  });
+
   var tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
   var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -14,8 +24,46 @@
   var player;
   function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
-      videoId: '{{ room.video_id }}'
+      videoId: '{{ room.video_id }}',
+      playerVars: { 'autoplay': 1, 'color': 'white' },
+      events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange
+      }
     });
+  }
+
+  socket.on('play', (time) => {
+    console.log(player.getCurrentTime())
+    if (Math.abs(player.getCurrentTime() - time) > 3 || player.getPlayerState() != 1) {
+      console.log('Play ' + time)
+      player.seekTo(time)
+      player.playVideo()
+    }
+  })
+
+  socket.on('pause', (time) => {
+    console.log(player.getCurrentTime())
+    if (Math.abs(player.getCurrentTime() - time) > 3 || player.getPlayerState() != 2) {
+      console.log('Pause ' + time)
+      player.seekTo(time)
+      player.pauseVideo()
+    }
+  })
+
+  function onPlayerReady(event) {
+    event.target.seekTo({{ room.video_time }})
+    event.target.playVideo()
+  }
+
+  function onPlayerStateChange(event) {
+    if (!ignore) {
+      if (event.data == 2) {
+        socket.emit('pauseAt', room, player.getCurrentTime())
+      } else if (event.data == 1) {
+        socket.emit('playAt', room, player.getCurrentTime())
+      }
+    }
   }
 </script>
 {% endblock %}
