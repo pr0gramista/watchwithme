@@ -3,9 +3,39 @@
 {% block content %}
 <section id="screen">
 <div id="player"></div>
-<div id="chat"></div>
+<div id="sidebar">
+  <div class="tabs">
+    <div class="tab active" id="chat">
+      <i class="material-icons">chat_bubble_outline</i>
+    </div>
+    <div class="tab" id="play">
+      <i class="material-icons">playlist_play</i>
+    </div>
+    <div class="tab" id="settings">
+      <i class="material-icons">settings</i>
+    </div>
+  </div>
+  <div id="chat-content">
+    <div class="message">
+      <span class="name">Ronin:</span> wow
+    </div>
+    <div class="message">
+      <span class="name">Ronin:</span> wow
+    </div>
+    <div class="message">
+      <span class="name">Ronin:</span> wow
+    </div>
+    <input id="text-input" />
+  </div>
+</div>
 </section>
 <script type="text/javascript" src="//cdn.socket.io/socket.io-1.4.5.js"></script>
+<script>
+  $('.tab').click(function (event) {
+    $('.tab').removeClass('active')
+    $(event.currentTarget).addClass('active')
+  })
+</script>
 <script>
   var socket = io('http://' + document.domain + ':' + location.port);
 

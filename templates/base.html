@@ -5,8 +5,14 @@
   <meta name="description" content="Watch videos with friends">
   <meta name="keywords" content="youtube,videos,together">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
   <title>{% block title %}{% endblock %}</title>
+  <script
+    src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+    crossorigin="anonymous"></script>
 </head>
 <body>
 {% block content %}{% endblock %}

@@ -1,6 +1,7 @@
 body {
   padding: 0;
   margin: 0;
+  font-family: 'Roboto', sans-serif;
 }
 
 #screen {
@@ -14,9 +15,52 @@ body {
   height: 100%;
 }
 
-#chat {
+#sidebar {
+  position: relative;
   width: 25%;
   height: 100%;
   background-color: #283593;
   color: #FFF;
+
+  .message {
+    display: block;
+    margin: 4px;
+  }
+
+  #text-input {
+    color: #FFF;
+    outline: none;
+    box-sizing: border-box;
+    padding: 5px;
+    background-color: #1A237E;
+    border: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 40px;
+    width: 100%;
+  }
+}
+
+.tabs {
+  display: flex;
+
+  .tab {
+    cursor: pointer;
+    text-align: center;
+    padding: 4px;
+    padding-top: 8px;
+    flex-grow: 1;
+    border-bottom: 2px solid #C2185B;
+    transition: border-bottom 0.5s;
+
+    &.active {
+      border-bottom: 3px solid #E91E63;
+      transition: border-bottom 0.5s;
+    }
+
+    i {
+      font-size: 24px;
+    }
+  }
 }
