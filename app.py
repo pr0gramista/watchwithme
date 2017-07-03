@@ -73,10 +73,13 @@ def index():
 def single_room(room_id):
     if rooms[room_id]['video_state'] == 'play':
         t = rooms[room_id]['video_time'] + time.time() - rooms[room_id]['last_update']
+        play = 1
     else:
         t = rooms[room_id]['video_time']
+        play = 0
 
     return render_template('room.html',
         room_id=room_id,
+        play=play,
         time=t,
         room=rooms[room_id])
