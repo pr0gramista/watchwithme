@@ -26,6 +26,9 @@ def handle_pause_at(room, t):
     rooms[room]['video_state'] = 'pause'
     socketio.emit('pause', t, room=room, include_self=False)
 
+@socketio.on('chat')
+def handle_pause_at(room, name, message):
+    socketio.emit('chat', "%s: %s" % (name, message), room=room)
 
 @socketio.on('playAt')
 def handle_play_at(room, t):

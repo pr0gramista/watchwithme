@@ -79,6 +79,19 @@
     }
   })
 
+  socket.on('chat', (message) => {
+    $( "#chat-content" ).append('<div class="message">' + message + '</div>');
+  })
+
+  $('#chat-content input').keypress(function (e) {
+    if (e.which == 13) {
+      var input = $('#chat-content input')
+      socket.emit('chat', room, "R", input.val())
+      input.val('')
+      return false;
+    }
+  });
+
   socket.on('pause', (time) => {
     if (Math.abs(player.getCurrentTime() - time) > 3 || player.getPlayerState() != 2) {
       player.seekTo(time)
