@@ -28,15 +28,6 @@
     </div>
   </div>
   <div id="chat-content">
-    <div class="message">
-      <span class="name">Ronin:</span> wow
-    </div>
-    <div class="message">
-      <span class="name">Ronin:</span> wow
-    </div>
-    <div class="message">
-      <span class="name">Ronin:</span> wow
-    </div>
     <input id="text-input" />
   </div>
 </div>
@@ -114,7 +105,11 @@
   $('#chat-content input').keypress(function (e) {
     if (e.which == 13) {
       var input = $('#chat-content input')
-      socket.emit('chat', room, "R", input.val())
+      var user = Cookies.get('wwm-user')
+      if (user == null || user.length == 0) {
+        user = "Anonymous"
+      }
+      socket.emit('chat', room, user, input.val())
       input.val('')
       return false;
     }
