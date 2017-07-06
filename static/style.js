@@ -4,9 +4,14 @@ $('.tab').click(function (event) {
 })
 
 $('.modal').click(function () {
-  console.log(event);
   if (event.target.className == 'modal-content-wrapper') {
     $(event.target).parent().remove()
+  }
+})
+
+$(document).ready(function () {
+  if (Cookies.get("wwm-user") == null || Cookies.get("wwm-user").length == 0) {
+    $('#wwm-name-modal').removeClass("hide")
   }
 })
 
