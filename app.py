@@ -48,14 +48,14 @@ def get_unique_room_id():
 @app.route('/')
 def index():
     # Get user cookie or create it
-    username = request.cookies.get('wwm-user')
-    if username is None:
-        username = get_unique(128)
+    secret = request.cookies.get('wwm-secret')
+    if secret is None:
+        secret = get_unique(128)
 
     # Create new room
     room_id = get_unique_room_id()
     room = {
-        'owner': username,
+        'owner': secret,
         'video_id': 'feA64wXhbjo',
         'video_state': 'pause',
         'video_set_permission': 'all',
@@ -65,7 +65,7 @@ def index():
     rooms[room_id] = room
 
     response = make_response(redirect(url_for('single_room', room_id=room_id)))
-    response.set_cookie('wwm-user', username)
+    response.set_cookie('wwm-secret', secret)
     return response
 
 
