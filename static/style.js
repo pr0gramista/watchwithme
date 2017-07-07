@@ -1,6 +1,9 @@
 $('.tab').click(function (event) {
   $('.tab').removeClass('active')
   $(event.currentTarget).addClass('active')
+
+  $('.tab-content').removeClass('active')
+  $('#' + event.currentTarget.id + '-content').addClass('active')
 })
 
 $('.modal').click(function () {

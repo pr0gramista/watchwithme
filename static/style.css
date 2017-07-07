@@ -57,6 +57,11 @@ input {
     .tabs .tab i {
       font-size: 24px; }
 
+.tab-content {
+  display: none; }
+  .tab-content.active {
+    display: block; }
+
 .modal {
   position: fixed;
   width: 100%;
