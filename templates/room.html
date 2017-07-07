@@ -39,6 +39,7 @@
 </div>
 </section>
 <script type="text/javascript" src="//cdn.socket.io/socket.io-1.4.5.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='utils.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='style.js') }}"></script>
 <script>
   // Create socket
@@ -96,6 +97,23 @@
     }
   }
 
+  // Receive messages on chat
+  socket.on('chat', (message) => {
+    $( "#chat-content" ).append('<div class="message">' + message + '</div>');
+  })
+
+  // Send message through chat
+  $('#chat-content input').keypress(function (e) {
+    if (e.which == 13) {
+      var input = $('#chat-content input')
+      var user = get_user()
+      socket.emit('chat', room, user, input.val())
+      input.val('')
+      return false;
+    }
+  });
+
+  // Play
   socket.on('play', (time) => {
     if (Math.abs(player.getCurrentTime() - time) > 3 || player.getPlayerState() != 1) {
       player.seekTo(time)
@@ -104,23 +122,7 @@
     }
   })
 
-  socket.on('chat', (message) => {
-    $( "#chat-content" ).append('<div class="message">' + message + '</div>');
-  })
-
-  $('#chat-content input').keypress(function (e) {
-    if (e.which == 13) {
-      var input = $('#chat-content input')
-      var user = Cookies.get('wwm-user')
-      if (user == null || user.length == 0) {
-        user = "Anonymous"
-      }
-      socket.emit('chat', room, user, input.val())
-      input.val('')
-      return false;
-    }
-  });
-
+  // Pause
   socket.on('pause', (time) => {
     if (Math.abs(player.getCurrentTime() - time) > 3 || player.getPlayerState() != 2) {
       player.seekTo(time)
