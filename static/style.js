@@ -18,10 +18,26 @@ $(document).ready(function () {
   }
 })
 
+$('#wwm-name').keypress(function (e) {
+  if (e.which == 13) {
+    var user = $("#wwm-name").val()
+    if (user.length > 0) {
+      Cookies.set("wwm-user", user)
+      $('#wwm-name-modal').remove()
+    }
+    return false;
+  }
+});
+
 $('#wwm-name-button').click(function () {
   var user = $("#wwm-name").val()
   if (user.length > 0) {
     Cookies.set("wwm-user", user)
     $('#wwm-name-modal').remove()
   }
+})
+
+$('#wwm-name-cancel').click(function () {
+  Cookies.set("wwm-user", "Anonymous")
+  $('#wwm-name-modal').remove()
 })
