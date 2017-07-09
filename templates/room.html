@@ -32,6 +32,7 @@
   </div>
   <div class="tab-content" id="play-content">
     Play content
+    <input id="url-input" />
   </div>
   <div class="tab-content" id="settings-content">
     Settings content
@@ -130,5 +131,21 @@
       supress()
     }
   })
+
+  // Change video
+  socket.on('changeVideo', (id) => {
+    player.loadVideoById(id)
+  })
+
+  // Set video
+  $('#play-content input').keypress(function (e) {
+    if (e.which == 13) {
+      var input = $('#play-content input')
+      var user = get_user()
+      socket.emit('setVideo', room, user, input.val())
+      input.val('')
+      return false;
+    }
+  });
 </script>
 {% endblock %}

@@ -40,6 +40,17 @@ input {
     left: 0;
     height: 40px;
     width: 100%; }
+  #sidebar #url-input {
+    color: #FFF;
+    outline: none;
+    box-sizing: border-box;
+    padding: 5px;
+    background-color: #1A237E;
+    border: none;
+    position: absolute;
+    left: 0;
+    height: 40px;
+    width: 100%; }
 
 .tabs {
   display: flex; }

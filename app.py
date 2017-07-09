@@ -1,6 +1,10 @@
 from flask import Flask, url_for, render_template, request, make_response, redirect
 from flask_socketio import SocketIO, join_room, leave_room
-import random, string, sys, time
+import random
+import string
+import sys
+import time
+import re
 app = Flask(__name__)
 socketio = SocketIO(app)
 
@@ -9,14 +13,30 @@ if __name__ == '__main__':
 
 rooms = {}
 
+video_patterns = [
+    re.compile(r'(?:.*)v=([^\?&]*)'),
+    re.compile(r'(?:.*)youtu.be/([^\?&]*)'),
+]
+
+
+def get_video_id(url):
+    for video_pattern in video_patterns:
+        match = video_pattern.match(url)
+        if match:
+            return match.group(1)
+    return None
+
+
 def get_unique(length):
     return ''.join(random.SystemRandom().choice(string.ascii_letters + string.digits) for _ in range(length))
+
 
 @socketio.on('join')
 def handle_join(room):
     if room in rooms:
         print("User joined %s" % room)
         join_room(room)
+
 
 @socketio.on('pauseAt')
 def handle_pause_at(room, t):
@@ -26,9 +46,11 @@ def handle_pause_at(room, t):
     rooms[room]['video_state'] = 'pause'
     socketio.emit('pause', t, room=room, include_self=False)
 
+
 @socketio.on('chat')
 def handle_pause_at(room, name, message):
     socketio.emit('chat', "%s: %s" % (name, message), room=room)
+
 
 @socketio.on('playAt')
 def handle_play_at(room, t):
@@ -39,11 +61,24 @@ def handle_play_at(room, t):
     socketio.emit('play', t, room=room, include_self=False)
 
 
+@socketio.on('setVideo')
+def handle_set_video(room, name, url):
+    print('Set video: ' + str(url))
+
+    video_id = get_video_id(url)
+    if video_id:
+        rooms[room]['video_id'] = video_id
+        socketio.emit('changeVideo', video_id, room=room)
+    else:
+        print("Bad url!")
+
+
 def get_unique_room_id():
     i = get_unique(16)
     while i in rooms:
         i = get_unique(16)
     return i
+
 
 @app.route('/')
 def index():
@@ -79,7 +114,7 @@ def single_room(room_id):
         play = 0
 
     return render_template('room.html',
-        room_id=room_id,
-        play=play,
-        time=t,
-        room=rooms[room_id])
+                           room_id=room_id,
+                           play=play,
+                           time=t,
+                           room=rooms[room_id])
