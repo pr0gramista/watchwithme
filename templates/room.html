@@ -79,16 +79,22 @@
     supress()
   }
 
+  // Made to stop player without showing infinite loading
+  stopFirst = true
+
   function onPlayerReady(event) {
     event.target.seekTo({{ time }})
     if({{ play }}) {
-      event.target.playVideo()
-    } else {
-      event.target.pauseVideo()
+      stopFirst = false
     }
   }
 
   function onPlayerStateChange(event) {
+    if (stopFirst && event.data == 1) {
+      event.target.pauseVideo()
+      stopFirst = false;
+    }
+
     if (!ignore) {
       if (event.data == 2) {
         socket.emit('pauseAt', room, player.getCurrentTime())
