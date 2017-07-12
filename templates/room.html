@@ -143,15 +143,20 @@
     player.loadVideoById(id)
   })
 
-  // Set video
+  // Add video to playlist
   $('#play-content input').keypress(function (e) {
     if (e.which == 13) {
       var input = $('#play-content input')
       var user = get_user()
-      socket.emit('setVideo', room, user, input.val())
+      socket.emit('addVideo', room, user, input.val())
       input.val('')
       return false;
     }
   });
+
+  // Play
+  socket.on('videoAdded', (id) => {
+    $("#play-content").append('<div class="video" id="' + id + '"><img src="https://img.youtube.com/vi/' + id + '/0.jpg" /></div>')
+  })
 </script>
 {% endblock %}

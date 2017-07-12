@@ -73,6 +73,18 @@ def handle_set_video(room, name, url):
         print("Bad url!")
 
 
+@socketio.on('addVideo')
+def handle_add_video(room, name, url):
+    print('Add video: ' + str(url))
+
+    video_id = get_video_id(url)
+    if video_id:
+        rooms[room]['playlist'].append(video_id)
+        socketio.emit('videoAdded', video_id, room=room)
+    else:
+        print("Bad url!")
+
+
 def get_unique_room_id():
     i = get_unique(16)
     while i in rooms:
@@ -95,7 +107,8 @@ def index():
         'video_state': 'pause',
         'video_set_permission': 'all',
         'video_time': 0,
-        'last_update': time.time()
+        'last_update': time.time(),
+        'playlist': []
     }
     rooms[room_id] = room
 
