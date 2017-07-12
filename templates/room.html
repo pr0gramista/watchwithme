@@ -31,8 +31,13 @@
     <input id="text-input" />
   </div>
   <div class="tab-content" id="play-content">
-    Play content
+    Place video url here
     <input id="url-input" />
+    {% for video in room.playlist %}
+      <div class="video" id="{{ video }}">
+        <img src="https://img.youtube.com/vi/{{ video }}/0.jpg" />
+      </div>
+    {% endfor %}
   </div>
   <div class="tab-content" id="settings-content">
     Settings content
