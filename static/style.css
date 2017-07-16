@@ -25,6 +25,15 @@ input {
   height: 100%;
   background-color: #283593;
   color: #FFF; }
+  #sidebar .mdl-tabs__tab-bar {
+    border-bottom: 1px solid #3f51b5; }
+  #sidebar .mdl-tabs.is-upgraded .mdl-tabs__tab.is-active:after {
+    background: #ff4081; }
+  #sidebar .mdl-tabs__tab {
+    flex-grow: 1;
+    color: #FFF; }
+    #sidebar .mdl-tabs__tab.is-active {
+      font-weight: bold; }
   #sidebar .message {
     display: block;
     margin: 4px; }

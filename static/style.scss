@@ -31,6 +31,22 @@ input {
   background-color: #283593;
   color: #FFF;
 
+  .mdl-tabs__tab-bar {
+    border-bottom: 1px solid rgb(63,81,181);
+  }
+
+  .mdl-tabs.is-upgraded .mdl-tabs__tab.is-active:after {
+    background: rgb(255,64,129);
+  }
+
+  .mdl-tabs__tab {
+    flex-grow: 1;
+    color: #FFF;
+    &.is-active {
+      font-weight: bold;
+    }
+  }
+
   .message {
     display: block;
     margin: 4px;

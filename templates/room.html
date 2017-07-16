@@ -16,31 +16,27 @@
 <section id="screen">
 <div id="player"></div>
 <div id="sidebar">
-  <div class="tabs">
-    <div class="tab active" id="chat">
-      <i class="material-icons">chat_bubble_outline</i>
+  <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+    <div class="mdl-tabs__tab-bar">
+      <a href="#chat-content" class="mdl-tabs__tab is-active">Chat</a>
+      <a href="#play-content" class="mdl-tabs__tab">Play</a>
+      <a href="#settings-content" class="mdl-tabs__tab">Settings</a>
     </div>
-    <div class="tab" id="play">
-      <i class="material-icons">playlist_play</i>
+    <div class="mdl-tabs__panel is-active" id="chat-content">
+      <input id="text-input" />
     </div>
-    <div class="tab" id="settings">
-      <i class="material-icons">settings</i>
+    <div class="mdl-tabs__panel" id="play-content">
+      Place video url here
+      <input id="url-input" />
+      {% for video in room.playlist %}
+        <div class="video" id="{{ video }}">
+          <img src="https://img.youtube.com/vi/{{ video }}/0.jpg" />
+        </div>
+      {% endfor %}
     </div>
-  </div>
-  <div class="tab-content active" id="chat-content">
-    <input id="text-input" />
-  </div>
-  <div class="tab-content" id="play-content">
-    Place video url here
-    <input id="url-input" />
-    {% for video in room.playlist %}
-      <div class="video" id="{{ video }}">
-        <img src="https://img.youtube.com/vi/{{ video }}/0.jpg" />
-      </div>
-    {% endfor %}
-  </div>
-  <div class="tab-content" id="settings-content">
-    Settings content
+    <div class="mdl-tabs__panel" id="settings-content">
+      Settings content
+    </div>
   </div>
 </div>
 </section>
