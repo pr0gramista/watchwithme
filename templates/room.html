@@ -47,7 +47,7 @@
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
-                videoId: '{{ room.video_id }}',
+                videoId: '{{ room.video_now }}',
                 playerVars: {'autoplay': {{ play }}, 'color': 'white'},
                 events: {
                     'onReady': onPlayerReady,
@@ -75,28 +75,12 @@
 
             if (!ignore) {
                 if (event.data === 2) {
-                    socket.emit('pauseAt', room, player.getCurrentTime())
+                    socket.emit('pause', room, player.getCurrentTime())
                 } else if (event.data === 1) {
-                    socket.emit('playAt', room, player.getCurrentTime())
+                    socket.emit('play', room, player.getCurrentTime())
                 }
             }
         }
-
-        // Receive messages on chat
-        socket.on('chat', function(message) {
-            $("#chat-content").append('<div class="message">' + message + '</div>');
-        })
-
-        // Send message through chat
-        $('#chat-content input').keypress(function (e) {
-            if (e.which == 13) {
-                var input = $('#chat-content input');
-                var user = get_user()
-                socket.emit('chat', room, user, input.val());
-                input.val('');
-                return false;
-            }
-        });
 
         // Play
         socket.on('play', function(time) {
