@@ -1,163 +1,143 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="modal hide" id="wwm-name-modal">
-  <div class="modal-content-wrapper">
-    <div class="modal-content">
-      <h2>How would you like to be called?</h2>
-      <input id="wwm-name" placeholder="Your name" />
-      <div class="button-group">
-        <button id="wwm-name-cancel">I am ninja</button>
-        <button id="wwm-name-button">Ok</button>
-      </div>
-    </div>
-  </div>
-</div>
-<section id="screen">
-<div id="player"></div>
-<div id="sidebar">
-  <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
-    <div class="mdl-tabs__tab-bar">
-      <a href="#chat-content" class="mdl-tabs__tab is-active">Chat</a>
-      <a href="#play-content" class="mdl-tabs__tab">Play</a>
-      <a href="#settings-content" class="mdl-tabs__tab">Settings</a>
-    </div>
-    <div class="mdl-tabs__panel is-active" id="chat-content">
-      <input id="text-input" />
-    </div>
-    <div class="mdl-tabs__panel" id="play-content">
-      Place video url here
-      <input id="url-input" />
-      {% for video in room.playlist %}
-        <div class="video" id="{{ video }}">
-          <img src="https://img.youtube.com/vi/{{ video }}/0.jpg" />
+    <div class="modal hide" id="wwm-name-modal">
+        <div class="modal-content-wrapper">
+            <div class="modal-content">
+                <h2>How would you like to be called?</h2>
+                <input id="wwm-name" placeholder="Your name"/>
+                <div class="button-group">
+                    <button id="wwm-name-cancel">I am ninja</button>
+                    <button id="wwm-name-button">Ok</button>
+                </div>
+            </div>
         </div>
-      {% endfor %}
     </div>
-    <div class="mdl-tabs__panel" id="settings-content">
-      Settings content
-    </div>
-  </div>
-</div>
-</section>
-<script type="text/javascript" src="//cdn.socket.io/socket.io-1.4.5.js"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='utils.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='style.js') }}"></script>
-<script>
-  // Create socket
-  var socket = io('http://' + document.domain + ':' + location.port);
+    <section id="screen">
+        <div id="player"></div>
+        <div id="sidebar">
+        </div>
+    </section>
+    <script type="text/javascript" src="//cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='utils.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='style.js') }}"></script>
+    <script>
+        var socket = io('http://' + document.domain + ':' + location.port);
 
-  var room = '{{ room_id }}'
-  socket.on('connect', function() {
-    socket.emit('join', room);
-  });
+        var room = '{{ room_id }}';
+        socket.on('connect', function () {
+            socket.emit('join', room);
+        });
 
-  var ignore = true
+        var ignore = true;
+        function supress() {
+            ignore = true;
+            setTimeout(function () {
+                ignore = false
+            }, 300)
+        }
 
-  function supress() {
-    ignore = true
-    setTimeout(() => {
-      ignore = false
-    }, 300)
-  }
+        // Load YouTube frame
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-  // Load YouTube frame
-  var tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  var firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        var player;
 
-  var player;
-  function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player', {
-      videoId: '{{ room.video_id }}',
-      playerVars: { 'autoplay': {{ play }}, 'color': 'white' },
-      events: {
-        'onReady': onPlayerReady,
-        'onStateChange': onPlayerStateChange
-      }
-    });
-    supress()
-  }
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                videoId: '{{ room.video_id }}',
+                playerVars: {'autoplay': {{ play }}, 'color': 'white'},
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+            supress()
+        }
 
-  // Made to stop player without showing infinite loading
-  stopFirst = true
+        // Made to stop player without showing infinite loading
+        stopFirst = true
 
-  function onPlayerReady(event) {
-    event.target.seekTo({{ time }})
-    if({{ play }}) {
-      stopFirst = false
-    }
-  }
+        function onPlayerReady(event) {
+            event.target.seekTo({{ time }});
+            if ({{ play }}) {
+                stopFirst = false
+            }
+        }
 
-  function onPlayerStateChange(event) {
-    if (stopFirst && event.data == 1) {
-      event.target.pauseVideo()
-      stopFirst = false;
-    }
+        function onPlayerStateChange(event) {
+            if (stopFirst && event.data === 1) {
+                event.target.pauseVideo();
+                stopFirst = false;
+            }
 
-    if (!ignore) {
-      if (event.data == 2) {
-        socket.emit('pauseAt', room, player.getCurrentTime())
-      } else if (event.data == 1) {
-        socket.emit('playAt', room, player.getCurrentTime())
-      }
-    }
-  }
+            if (!ignore) {
+                if (event.data === 2) {
+                    socket.emit('pauseAt', room, player.getCurrentTime())
+                } else if (event.data === 1) {
+                    socket.emit('playAt', room, player.getCurrentTime())
+                }
+            }
+        }
 
-  // Receive messages on chat
-  socket.on('chat', (message) => {
-    $( "#chat-content" ).append('<div class="message">' + message + '</div>');
-  })
+        // Receive messages on chat
+        socket.on('chat', function(message) {
+            $("#chat-content").append('<div class="message">' + message + '</div>');
+        })
 
-  // Send message through chat
-  $('#chat-content input').keypress(function (e) {
-    if (e.which == 13) {
-      var input = $('#chat-content input')
-      var user = get_user()
-      socket.emit('chat', room, user, input.val())
-      input.val('')
-      return false;
-    }
-  });
+        // Send message through chat
+        $('#chat-content input').keypress(function (e) {
+            if (e.which == 13) {
+                var input = $('#chat-content input');
+                var user = get_user()
+                socket.emit('chat', room, user, input.val());
+                input.val('');
+                return false;
+            }
+        });
 
-  // Play
-  socket.on('play', (time) => {
-    if (Math.abs(player.getCurrentTime() - time) > 3 || player.getPlayerState() != 1) {
-      player.seekTo(time)
-      player.playVideo()
-      supress()
-    }
-  })
+        // Play
+        socket.on('play', function(time) {
+            if(Math.abs(player.getCurrentTime() - time) > 3 || player.getPlayerState() !== 1)
+            {
+                player.seekTo(time);
+                player.playVideo();
+                supress()
+            }
+        });
 
-  // Pause
-  socket.on('pause', (time) => {
-    if (Math.abs(player.getCurrentTime() - time) > 3 || player.getPlayerState() != 2) {
-      player.seekTo(time)
-      player.pauseVideo()
-      supress()
-    }
-  })
+        // Pause
+        socket.on('pause', function (time) {
+            if(Math.abs(player.getCurrentTime() - time) > 3 || player.getPlayerState() !== 2)
+            {
+                player.seekTo(time);
+                player.pauseVideo();
+                supress()
+            }
+        });
 
-  // Change video
-  socket.on('changeVideo', (id) => {
-    player.loadVideoById(id)
-  })
+        // Change video
+        socket.on('changeVideo', function(id) {
+            player.loadVideoById(id)
+        });
 
-  // Add video to playlist
-  $('#play-content input').keypress(function (e) {
-    if (e.which == 13) {
-      var input = $('#play-content input')
-      var user = get_user()
-      socket.emit('addVideo', room, user, input.val())
-      input.val('')
-      return false;
-    }
-  });
+        // Add video to playlist
+        $('#play-content input').keypress(function (e) {
+            if (e.which == 13) {
+                var input = $('#play-content input')
+                var user = get_user();
+                socket.emit('addVideo', room, user, input.val());
+                input.val('');
+                return false;
+            }
+        });
 
-  // Play
-  socket.on('videoAdded', (id) => {
-    $("#play-content").append('<div class="video" id="' + id + '"><img src="https://img.youtube.com/vi/' + id + '/0.jpg" /></div>')
-  })
-</script>
+        // Play
+        socket.on('videoAdded', function(id) {
+            $("#play-content")
+                .append('<div class="video" id="' + id + '"><img src="https://img.youtube.com/vi/' + id + '/0.jpg" /></div>')
+        })
+    </script>
 {% endblock %}
