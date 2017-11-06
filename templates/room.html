@@ -1,26 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="modal hide" id="wwm-name-modal">
-        <div class="modal-content-wrapper">
-            <div class="modal-content">
-                <h2>How would you like to be called?</h2>
-                <input id="wwm-name" placeholder="Your name"/>
-                <div class="button-group">
-                    <button id="wwm-name-cancel">I am ninja</button>
-                    <button id="wwm-name-button">Ok</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <section id="screen">
         <div id="player"></div>
         <div id="sidebar">
         </div>
     </section>
     <script type="text/javascript" src="//cdn.socket.io/socket.io-1.4.5.js"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='utils.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='style.js') }}"></script>
     <script>
         var socket = io('http://' + document.domain + ':' + location.port);
 
@@ -58,7 +44,7 @@
         }
 
         // Made to stop player without showing infinite loading
-        stopFirst = true
+        stopFirst = true;
 
         function onPlayerReady(event) {
             event.target.seekTo({{ time }});
@@ -102,21 +88,6 @@
             }
         });
 
-        // Change video
-        socket.on('changeVideo', function(id) {
-            player.loadVideoById(id)
-        });
-
-        // Add video to playlist
-        $('#play-content input').keypress(function (e) {
-            if (e.which == 13) {
-                var input = $('#play-content input')
-                var user = get_user();
-                socket.emit('addVideo', room, user, input.val());
-                input.val('');
-                return false;
-            }
-        });
 
         // Play
         socket.on('videoAdded', function(id) {
