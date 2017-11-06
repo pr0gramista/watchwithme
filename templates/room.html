@@ -4,14 +4,22 @@
     <section id="screen">
         <div id="player"></div>
         <div id="sidebar">
-            <div class="input-group">
-                <input type="text" class="form-control" id="video-add-input" placeholder="Video or playlist url"
-                       aria-label="Video or playlist url">
-                <span class="input-group-btn">
-                    <button id="video-add-btn" class="btn btn-secondary" type="button">Add</button>
-                </span>
+            <div>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="video-add-input" placeholder="Video or playlist url"
+                           aria-label="Video or playlist url">
+                    <span class="input-group-btn">
+                        <button id="video-add-btn" class="btn btn-secondary" type="button">Add</button>
+                    </span>
+                </div>
             </div>
             <div id="videos">
+                {% for video in room.playlist %}
+                    <a class="video" data-id="{{ video.id }}" href="https://youtu.be/{{ video.id }}">
+                        <span>{{ video.title }}</span>
+                        <img src="{{ video.thumbnail }}">
+                    </a>
+                {% endfor %}
             </div>
         </div>
     </section>
@@ -104,8 +112,16 @@
             }
         });
 
-        socket.on('video_added', function (a) {
-            console.log(a);
+        socket.on('video_added', function (videos) {
+            var videosElement = $("#videos");
+            for (var i = 0; i < videos.length; i++) {
+                var video = videos[i];
+                videosElement.append(
+                    '<a class="video" data-id="' + video.id + '" href="https://youtu.be/' + video.id + '">' +
+                    '<span>' + video.title + '</span>' +
+                    '<img src="' + video.thumbnail + '"></a>'
+                )
+            }
         });
     </script>
 {% endblock %}

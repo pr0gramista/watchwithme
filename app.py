@@ -2,6 +2,8 @@ import random
 import string
 import time
 
+import config
+import youtube
 from flask import Flask, url_for, render_template, make_response, redirect
 from flask_socketio import SocketIO, join_room
 from room import Room
@@ -9,6 +11,7 @@ from video import VideoState
 
 app = Flask(__name__)
 socketio = SocketIO(app)
+yt = youtube.YouTube(config.API)
 
 if __name__ == '__main__':
     socketio.run(app)
@@ -21,6 +24,23 @@ def get_room_with_id(id):
         return [room for room in rooms if room.id == id][0]
     except Exception:
         return None
+
+
+@socketio.on('add')
+def handle_add(room_id, url):
+    room = get_room_with_id(room_id)
+    if room is None:
+        return None
+
+    playlist_id = yt.get_playlist_id_from_url(url)
+    if playlist_id is None:
+        video_id = yt.get_video_id_from_url(url)
+        if video_id is None:
+            print('No video found')
+        else:
+            room.add_video(yt.get_video(video_id))
+    else:
+        room.import_yt_playlist(yt.get_playlist(playlist_id))
 
 
 @socketio.on('join')

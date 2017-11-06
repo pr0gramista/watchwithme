@@ -20,6 +20,8 @@ input {
   height: 100%; }
 
 #sidebar {
+    display: flex;
+    flex-direction: column;
   position: relative;
   width: 25%;
   height: 100%;
@@ -35,6 +37,29 @@ input {
 #sidebar #video-add-input {
     border-radius: 0;
     border: none;
+}
+
+#sidebar #videos {
+    overflow-y: auto;
+}
+
+#sidebar .video {
+    position: relative;
+    margin: 20px;
+    display: block;
+    color: #FFF;
+}
+
+#sidebar .video span {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    max-width: 90%;
+    text-shadow: 0 2px 3px black;
+}
+
+#sidebar .video img {
+    width: 100%;
 }
 
 #play-content .video {
