@@ -32,23 +32,19 @@ def handle_join(room_id):
 
 @socketio.on('pause')
 def handle_pause(room_id, t):
-    print('Pause: ' + str(t))
+    print('Pause: {}'.format(t))
     room = get_room_with_id(room_id)
     if room is not None:
-        room.video_time = t
-        room.video_timestamp = time.time()
-        room.video_state = VideoState.PAUSED
+        room.pause(t)
         socketio.emit('pause', t, room=room_id, include_self=False)
 
 
 @socketio.on('play')
 def handle_play_at(room_id, t):
-    print('Play: ' + str(t))
+    print('Play: {}'.format(t))
     room = get_room_with_id(room_id)
     if room is not None:
-        room.video_time = t
-        room.video_timestamp = time.time()
-        room.video_state = VideoState.PLAYING
+        room.play(t)
         socketio.emit('play', t, room=room_id, include_self=False)
 
 

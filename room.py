@@ -14,11 +14,15 @@ class Room():
         self.video_timestamp = time.time()
         self.video_state = VideoState.PAUSED
 
-    def play(self):
-        pass
+    def play(self, t):
+        self.video_time = t
+        self.video_timestamp = time.time()
+        self.video_state = VideoState.PLAYING
 
-    def stop(self):
-        pass
+    def pause(self, t):
+        self.video_time = t
+        self.video_timestamp = time.time()
+        self.video_state = VideoState.PAUSED
 
     def seek(self):
         pass
