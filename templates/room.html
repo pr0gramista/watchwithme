@@ -4,6 +4,15 @@
     <section id="screen">
         <div id="player"></div>
         <div id="sidebar">
+            <div class="input-group">
+                <input type="text" class="form-control" id="video-add-input" placeholder="Video or playlist url"
+                       aria-label="Video or playlist url">
+                <span class="input-group-btn">
+                    <button id="video-add-btn" class="btn btn-secondary" type="button">Add</button>
+                </span>
+            </div>
+            <div id="videos">
+            </div>
         </div>
     </section>
     <script type="text/javascript" src="//cdn.socket.io/socket.io-1.4.5.js"></script>
@@ -68,6 +77,13 @@
             }
         }
 
+        $("#video-add-btn").click(function (event) {
+            var video_add_input = $("#video-add-input");
+            var url = video_add_input.val();
+            video_add_input.val('');
+            socket.emit('add', room, url);
+        });
+
         // Play
         socket.on('play', function(time) {
             if(Math.abs(player.getCurrentTime() - time) > 3 || player.getPlayerState() !== 1)
@@ -88,11 +104,8 @@
             }
         });
 
-
-        // Play
-        socket.on('videoAdded', function(id) {
-            $("#play-content")
-                .append('<div class="video" id="' + id + '"><img src="https://img.youtube.com/vi/' + id + '/0.jpg" /></div>')
-        })
+        socket.on('video_added', function (a) {
+            console.log(a);
+        });
     </script>
 {% endblock %}
