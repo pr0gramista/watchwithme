@@ -4,7 +4,7 @@ import time
 
 import config
 import youtube
-from flask import Flask, url_for, render_template, make_response, redirect
+from flask import Flask, url_for, render_template, make_response, redirect, abort
 from flask_socketio import SocketIO, join_room
 from room import Room
 from video import VideoState
@@ -20,9 +20,10 @@ rooms = []
 
 
 def get_room_with_id(id):
-    try:
-        return [room for room in rooms if room.id == id][0]
-    except Exception:
+    r = [room for room in rooms if room.id == id]
+    if len(r) > 0:
+        return r[0]
+    else:
         return None
 
 
@@ -30,7 +31,7 @@ def get_room_with_id(id):
 def handle_add(room_id, url):
     room = get_room_with_id(room_id)
     if room is None:
-        return None
+        return abort(404)
 
     playlist_id = yt.get_playlist_id_from_url(url)
     if playlist_id is None:
@@ -46,26 +47,32 @@ def handle_add(room_id, url):
 @socketio.on('join')
 def handle_join(room_id):
     room = get_room_with_id(room_id)
-    if room is not None:
-        join_room(room_id)
+    if room is None:
+        return abort(404)
+
+    join_room(room_id)
 
 
 @socketio.on('pause')
 def handle_pause(room_id, t):
     print('Pause: {}'.format(t))
     room = get_room_with_id(room_id)
-    if room is not None:
-        room.pause(t)
-        socketio.emit('pause', t, room=room_id, include_self=False)
+    if room is None:
+        return abort(404)
+
+    room.pause(t)
+    socketio.emit('pause', t, room=room_id, include_self=False)
 
 
 @socketio.on('play')
 def handle_play_at(room_id, t):
     print('Play: {}'.format(t))
     room = get_room_with_id(room_id)
-    if room is not None:
-        room.play(t)
-        socketio.emit('play', t, room=room_id, include_self=False)
+    if room is None:
+        return abort(404)
+
+    room.play(t)
+    socketio.emit('play', t, room=room_id, include_self=False)
 
 
 def get_unique(length):
