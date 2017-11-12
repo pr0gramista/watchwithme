@@ -32,14 +32,23 @@ class YouTube():
                 return match.group(1)
         return None
 
-
-    def get_playlist(self, playlist_id):
+    def get_playlist_items(self, playlist_id):
         base = 'https://www.googleapis.com/youtube/v3/playlistItems?'
         params = urlencode({
             'key': self.key,
             'part': 'snippet',
             'maxResults': 50,
             'playlistId': playlist_id
+        })
+        response = urlopen(base + params).read()
+        return json.loads(response, encoding='utf8')
+
+    def get_playlist_info(self, playlist_id):
+        base = 'https://www.googleapis.com/youtube/v3/playlists?'
+        params = urlencode({
+            'key': self.key,
+            'part': 'snippet',
+            'id': playlist_id
         })
         response = urlopen(base + params).read()
         return json.loads(response, encoding='utf8')
