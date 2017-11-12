@@ -10,38 +10,28 @@ class Room():
     def __init__(self, unique_id):
         self.id = unique_id
         self.playlist = []
-        self.video_now = 'feA64wXhbjo'
-        self.video_time = 0
-        self.video_timestamp = time.time()
-        self.video_state = VideoState.PAUSED
+        self.live_video = 'feA64wXhbjo'
+        self.live_video_time = 0
+        self.live_video_timestamp = time.time()
+        self.live_video_state = VideoState.PAUSED
 
     def play(self, t):
-        self.video_time = t
-        self.video_timestamp = time.time()
-        self.video_state = VideoState.PLAYING
+        self.live_video_time = t
+        self.live_video_timestamp = time.time()
+        self.live_video_state = VideoState.PLAYING
 
     def pause(self, t):
-        self.video_time = t
-        self.video_timestamp = time.time()
-        self.video_state = VideoState.PAUSED
+        self.live_video_time = t
+        self.live_video_timestamp = time.time()
+        self.live_video_state = VideoState.PAUSED
 
-    def change_video(self):
-        pass
+    def change_live_video(self, video_id):
+        self.live_video = video_id
+        self.live_video_time = 0
+        self.live_video_timestamp = time.time()
+        self.live_video_state = VideoState.PLAYING
 
-    def add_video(self, video):
-        data = {
-            'id': video['items'][0]['id'],
-            'title': video['items'][0]['snippet']['title'],
-            'thumbnail': video['items'][0]['snippet']['thumbnails']['high']['url']
-        }
-        self.playlist.append(data)
-        app.socketio.emit('video_added', [data], room=self.id)
-
-    def remove_video(self):
-        pass
-
-    def change_playlist(self):
-        pass
+        app.socketio.emit('live_video_changed', video_id)
 
     def create_playlist(self):
         pass

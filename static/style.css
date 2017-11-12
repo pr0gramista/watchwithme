@@ -34,6 +34,10 @@ input {
     border: none;
 }
 
+#sidebar #video-add-btn .material-icons {
+    vertical-align: middle;
+}
+
 #sidebar #video-add-input {
     border-radius: 0;
     border: none;

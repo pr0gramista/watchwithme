@@ -37,6 +37,9 @@ input {
     border-radius: 0;
     background: rgb(63, 81, 181);
     border: none;
+    .material-icons {
+      vertical-align: middle;
+    }
   }
 
   #video-add-input {

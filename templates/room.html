@@ -9,7 +9,7 @@
                     <input type="text" class="form-control" id="video-add-input" placeholder="Video or playlist url"
                            aria-label="Video or playlist url">
                     <span class="input-group-btn">
-                        <button id="video-add-btn" class="btn btn-secondary" type="button">Add</button>
+                        <button id="video-add-btn" class="btn btn-secondary" type="button"><i class="material-icons">send</i></button>
                     </span>
                 </div>
             </div>
@@ -50,7 +50,7 @@
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
-                videoId: '{{ room.video_now }}',
+                videoId: '{{ room.live_video }}',
                 playerVars: {'autoplay': {{ play }}, 'color': 'white'},
                 events: {
                     'onReady': onPlayerReady,
@@ -89,7 +89,7 @@
             var video_add_input = $("#video-add-input");
             var url = video_add_input.val();
             video_add_input.val('');
-            socket.emit('add', room, url);
+            socket.emit('live_change_video', room, url);
         });
 
         // Play
@@ -112,7 +112,13 @@
             }
         });
 
-        socket.on('video_added', function (videos) {
+
+        socket.on('live_video_changed', function (video_id) {
+            console.log(video_id);
+            player.loadVideoById(video_id);
+        });
+
+        /*socket.on('video_added', function (videos) {
             var videosElement = $("#videos");
             for (var i = 0; i < videos.length; i++) {
                 var video = videos[i];
@@ -122,6 +128,8 @@
                     '<img src="' + video.thumbnail + '"></a>'
                 )
             }
-        });
+        });*/
+
+
     </script>
 {% endblock %}

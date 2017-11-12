@@ -27,21 +27,14 @@ def get_room_with_id(id):
         return None
 
 
-@socketio.on('add')
-def handle_add(room_id, url):
+@socketio.on('live_change_video')
+def handle_live_change(room_id, video_url):
     room = get_room_with_id(room_id)
     if room is None:
         return abort(404)
 
-    playlist_id = yt.get_playlist_id_from_url(url)
-    if playlist_id is None:
-        video_id = yt.get_video_id_from_url(url)
-        if video_id is None:
-            print('No video found')
-        else:
-            room.add_video(yt.get_video(video_id))
-    else:
-        room.import_yt_playlist(yt.get_playlist(playlist_id))
+    video_id = yt.get_video_id_from_url(video_url)
+    room.change_live_video(video_id)
 
 
 @socketio.on('join')
@@ -101,11 +94,11 @@ def index():
 def single_room(room_id):
     room = get_room_with_id(room_id)
     if room is not None:
-        play = room.video_state.value
-        if room.video_state == VideoState.PLAYING:
-            t = room.video_time + time.time() - room.video_timestamp
+        play = room.live_video_state.value
+        if room.live_video_state == VideoState.PLAYING:
+            t = room.live_video_time + time.time() - room.live_video_timestamp
         else:
-            t = room.video_time
+            t = room.live_video_time
         return render_template('room.html',
                                room_id=room_id,
                                play=play,
