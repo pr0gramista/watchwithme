@@ -1,3 +1,4 @@
+import app
 import room
 
 r = room.Room('this2is6unique')
