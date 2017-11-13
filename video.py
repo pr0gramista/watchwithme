@@ -1,6 +1,6 @@
-from enum import Enum
+from enum import IntEnum
 
 
-class VideoState(Enum):
+class VideoState(IntEnum):
     PAUSED = 0
     PLAYING = 1

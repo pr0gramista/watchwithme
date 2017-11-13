@@ -66,6 +66,17 @@ input {
     width: 100%;
 }
 
+#sidebar #playlistMenuButton {
+    width: 100%;
+    background: #283593;
+    border: none;
+}
+
+#sidebar #playlistMenu .dropdown-menu {
+    width: 100%;
+    transform: translate3d(0px, 35px, 0px);
+}
+
 #play-content .video {
   width: 80%;
   margin: 10px auto; }

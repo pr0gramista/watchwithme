@@ -42,7 +42,7 @@ class Room():
     def import_yt_playlist(self, playlist_id):
         new_playlist = Playlist(playlist_id)
         self.playlists.append(new_playlist)
-        app.socketio.emit('playlist_added', new_playlist, room=self.id)
+        app.socketio.emit('playlist_added', new_playlist.__dict__, room=self.id)
 
     def __get_unique(self):
         return ''.join(random.SystemRandom().choice(string.ascii_letters + string.digits) for _ in range(16))

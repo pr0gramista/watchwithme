@@ -27,6 +27,27 @@ def get_room_with_id(id):
         return None
 
 
+@socketio.on('add_playlist')
+def handle_add_playlist(room_id, playlist_url):
+    print(playlist_url)
+    room = get_room_with_id(room_id)
+    if room is None:
+        return abort(404)
+
+    playlist_id = yt.get_playlist_id_from_url(playlist_url)
+    room.import_yt_playlist(playlist_id)
+    print('pla imp')
+
+
+@socketio.on('remove_playlist')
+def handle_add_playlist(room_id, playlist_id):
+    room = get_room_with_id(room_id)
+    if room is None:
+        return abort(404)
+
+    room.remove_playlist(playlist_id)
+
+
 @socketio.on('live_change_video')
 def handle_live_change(room_id, video_url):
     room = get_room_with_id(room_id)

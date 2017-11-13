@@ -5,6 +5,20 @@
         <div id="player"></div>
         <div id="sidebar">
             <div>
+                <div class="dropdown" id="playlistMenu">
+                    <button class="btn btn-secondary dropdown-toggle"
+                            type="button" id="playlistMenuButton"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false">
+                        Live
+                    </button>
+                    <div id="playlistMenuItems" class="dropdown-menu" aria-labelledby="playlistMenuButton">
+                        <a class="dropdown-item" href="#">Playlist #1</a>
+                    </div>
+                </div>
+            </div>
+            <div>
                 <div class="input-group">
                     <input type="text" class="form-control" id="video-add-input" placeholder="Video or playlist url"
                            aria-label="Video or playlist url">
@@ -112,24 +126,21 @@
             }
         });
 
-
         socket.on('live_video_changed', function (video_id) {
             console.log(video_id);
             player.loadVideoById(video_id);
         });
 
-        /*socket.on('video_added', function (videos) {
-            var videosElement = $("#videos");
-            for (var i = 0; i < videos.length; i++) {
-                var video = videos[i];
-                videosElement.append(
-                    '<a class="video" data-id="' + video.id + '" href="https://youtu.be/' + video.id + '">' +
-                    '<span>' + video.title + '</span>' +
-                    '<img src="' + video.thumbnail + '"></a>'
-                )
-            }
-        });*/
+        socket.on('playlist_added', function (playlist) {
+            console.log(playlist);
+            var playlistMenuItems = $("#playlistMenuItems");
+            playlistMenuItems.append(
+                '<a class="dropdown-item" href="#" data-playlist-id="' +
+                playlist.id + '">' + playlist.title + '</a>');
+        });
 
-
+        socket.on('playlist_removed', function (playlist_id) {
+            $('#playlistMenuItems').find('a[data-playlist-id="' + playlist_id + '"]').remove();
+        });
     </script>
 {% endblock %}

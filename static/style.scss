@@ -69,6 +69,19 @@ input {
       width: 100%;
     }
   }
+
+  #playlistMenuButton {
+    width: 100%;
+    background: #283593;
+    border: none;
+  }
+
+  #playlistMenu {
+    .dropdown-menu {
+      width: 100%;
+      transform: translate3d(0px, 35px, 0px);
+    }
+  }
 }
 
 #play-content {
