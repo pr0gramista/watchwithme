@@ -36,7 +36,6 @@ def handle_add_playlist(room_id, playlist_url):
 
     playlist_id = yt.get_playlist_id_from_url(playlist_url)
     room.import_yt_playlist(playlist_id)
-    print('pla imp')
 
 
 @socketio.on('remove_playlist')
