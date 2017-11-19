@@ -57,6 +57,15 @@ def handle_live_change(room_id, video_url):
     room.change_live_video(video_id)
 
 
+@socketio.on('send_message')
+def handle_send_message(room_id, message):
+    room = get_room_with_id(room_id)
+    if room is None:
+        return abort(404)
+
+    room.send_message(message)
+
+
 @socketio.on('join')
 def handle_join(room_id):
     room = get_room_with_id(room_id)

@@ -26,12 +26,15 @@ class Room():
         self.live_video_timestamp = time.time()
         self.live_video_state = VideoState.PAUSED
 
+    def send_message(self, message):
+        app.socketio.emit('message_sent', message, room=self.id)
+
     def change_live_video(self, video_id):
         self.live_video = video_id
         self.live_video_time = 0
         self.live_video_timestamp = time.time()
         self.live_video_state = VideoState.PLAYING
-        app.socketio.emit('live_video_changed', video_id)
+        app.socketio.emit('live_video_changed', video_id, room=self.id)
 
     def remove_playlist(self, playlist_id):
         updated_playlists = [playlist for playlist in self.playlists if playlist.id != playlist_id]
