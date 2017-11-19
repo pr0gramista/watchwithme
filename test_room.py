@@ -9,8 +9,11 @@ def test_is_playlist_added():
     def mock_get_playlist_info(playlist_id):
         return test_data.playlist_info
 
-    def mock_get_playlist_items(playlist_id):
-        return test_data.playlist_items
+    def mock_get_playlist_items(playlist_id, page_token=""):
+        if len(page_token) > 0:
+            return test_data.playlist_items_without_token
+        else:
+            return test_data.playlist_items
 
     app.yt.get_playlist_items = mock_get_playlist_items
     app.yt.get_playlist_info = mock_get_playlist_info
