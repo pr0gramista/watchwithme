@@ -1,14 +1,12 @@
 import random
 import string
-import time
 
 from . import app
 from .playlist import Playlist
-from .video import VideoState
 from .live import Live
 
 
-class Room():
+class Room:
     def __init__(self, unique_id):
         self.id = unique_id
 
@@ -32,28 +30,28 @@ class Room():
     @property
     def video(self):
         if self.current_playlist is not None:
-            pass # TODO: Get current video form playlist
+            pass  # TODO: Get current video form playlist
         else:
             return self.live.video
         
     @property
     def video_state(self):
         if self.current_playlist is not None:
-            pass # TODO: Get current video state form playlist
+            pass  # TODO: Get current video state form playlist
         else:
             return self.live.video_state
 
     @property
     def video_time(self):
         if self.current_playlist is not None:
-            pass # TODO: Get current video time form playlist
+            pass  # TODO: Get current video time form playlist
         else:
             return self.live.video_time
 
     @property
     def video_timestamp(self):
         if self.current_playlist is not None:
-            pass # TODO: Get current video timestamp form playlist
+            pass  # TODO: Get current video timestamp form playlist
         else:
             return self.live.video_timestamp
 
@@ -71,5 +69,6 @@ class Room():
         self.playlists.append(new_playlist)
         app.socketio.emit('playlist_added', new_playlist.__dict__, room=self.id)
 
-    def __get_unique(self):
+    @staticmethod
+    def __get_unique():
         return ''.join(random.SystemRandom().choice(string.ascii_letters + string.digits) for _ in range(16))

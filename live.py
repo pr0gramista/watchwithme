@@ -3,7 +3,8 @@ import time
 from . import app
 from .video import VideoState
 
-class Live():
+
+class Live:
     def __init__(self, room_id):
         self.room_id = room_id
         self.queue = []
@@ -13,7 +14,8 @@ class Live():
         self.video_state = VideoState.PAUSED
 
     def add_video(self, video_id):
-        self.queue.append(app.yt.get_video)
+        self.queue.append(app.yt.get_video(video_id))
+        app.socketio.emit('live_feed_video_added', video_id, room=self.room_id)
 
     def remove_video(self, video_id):
         updated_queue = [video for video in self.queue if video.id != video_id]

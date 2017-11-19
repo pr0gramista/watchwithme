@@ -4,7 +4,7 @@ from . import app
 from .video import VideoState
 
 
-class Playlist():
+class Playlist:
     def __init__(self, playlist_id):
         self.id = playlist_id
         vars().update(app.yt.get_playlist_info(playlist_id))
