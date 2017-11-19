@@ -64,7 +64,7 @@
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
-                videoId: '{{ room.live_video }}',
+                videoId: '{{ room.video }}',
                 playerVars: {'autoplay': {{ play }}, 'color': 'white'},
                 events: {
                     'onReady': onPlayerReady,

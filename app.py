@@ -2,12 +2,13 @@ import random
 import string
 import time
 
-import config
-import youtube
+
 from flask import Flask, url_for, render_template, make_response, redirect, abort
 from flask_socketio import SocketIO, join_room
-from room import Room
-from video import VideoState
+from . import config
+from . import youtube
+from .room import Room
+from .video import VideoState
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -54,7 +55,7 @@ def handle_live_change(room_id, video_url):
         return abort(404)
 
     video_id = yt.get_video_id_from_url(video_url)
-    room.change_live_video(video_id)
+    room.live.set_video(video_id)
 
 
 @socketio.on('send_message')
@@ -123,11 +124,11 @@ def index():
 def single_room(room_id):
     room = get_room_with_id(room_id)
     if room is not None:
-        play = room.live_video_state.value
-        if room.live_video_state == VideoState.PLAYING:
-            t = room.live_video_time + time.time() - room.live_video_timestamp
+        play = room.video_state.value
+        if room.video_state == VideoState.PLAYING:
+            t = room.video_time + time.time() - room.video_timestamp
         else:
-            t = room.live_video_time
+            t = room.video_time
         return render_template('room.html',
                                room_id=room_id,
                                play=play,

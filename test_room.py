@@ -1,19 +1,30 @@
-import app
-import room
-import test_data
+from . import app
+from . import room
 
 r = room.Room('this2is6unique')
 
 
 def test_is_playlist_added():
     def mock_get_playlist_info(playlist_id):
-        return test_data.playlist_info
+        return {
+            'title': 'This is sample playlist',
+            'description': 'You shoudn\'t read this...',
+            'channelId': 'noThis66notachanlle',
+            'channelTitle': 'NoNoChananel',
+        }
 
     def mock_get_playlist_items(playlist_id, page_token=""):
-        if len(page_token) > 0:
-            return test_data.playlist_items_without_token
-        else:
-            return test_data.playlist_items
+        return [
+            {
+                'id': 'y6120QOlsfU',
+                'title': 'Darude - Sandstorm',
+                'thumbnail': 'https://i.ytimg.com/vi/y6120QOlsfU/hqdefault.jpg'
+            },
+            {
+                'id': 'Be0OAjuk_1k',
+                'title': 'Scatman John - Scatman (Extended Mix) 1995',
+                'thumbnail': 'https://i.ytimg.com/vi/Be0OAjuk_1k/hqdefault.jpg'
+            }]
 
     app.yt.get_playlist_items = mock_get_playlist_items
     app.yt.get_playlist_info = mock_get_playlist_info

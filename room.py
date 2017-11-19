@@ -2,39 +2,63 @@ import random
 import string
 import time
 
-import app
-from playlist import Playlist
-from video import VideoState
+from . import app
+from .playlist import Playlist
+from .video import VideoState
+from .live import Live
 
 
 class Room():
     def __init__(self, unique_id):
         self.id = unique_id
+
+        self.current_playlist = None
         self.playlists = []
-        self.live_video = 'feA64wXhbjo'
-        self.live_video_time = 0
-        self.live_video_timestamp = time.time()
-        self.live_video_state = VideoState.PAUSED
+
+        self.live = Live(self.id)
 
     def play(self, t):
-        self.live_video_time = t
-        self.live_video_timestamp = time.time()
-        self.live_video_state = VideoState.PLAYING
+        if self.current_playlist is not None:
+            self.current_playlist.play()
+        else:
+            self.live.play(t)
 
     def pause(self, t):
-        self.live_video_time = t
-        self.live_video_timestamp = time.time()
-        self.live_video_state = VideoState.PAUSED
+        if self.current_playlist is not None:
+            self.current_playlist.pause()
+        else:
+            self.live.pause(t)
+
+    @property
+    def video(self):
+        if self.current_playlist is not None:
+            pass # TODO: Get current video form playlist
+        else:
+            return self.live.video
+        
+    @property
+    def video_state(self):
+        if self.current_playlist is not None:
+            pass # TODO: Get current video state form playlist
+        else:
+            return self.live.video_state
+
+    @property
+    def video_time(self):
+        if self.current_playlist is not None:
+            pass # TODO: Get current video time form playlist
+        else:
+            return self.live.video_time
+
+    @property
+    def video_timestamp(self):
+        if self.current_playlist is not None:
+            pass # TODO: Get current video timestamp form playlist
+        else:
+            return self.live.video_timestamp
 
     def send_message(self, message):
         app.socketio.emit('message_sent', message, room=self.id)
-
-    def change_live_video(self, video_id):
-        self.live_video = video_id
-        self.live_video_time = 0
-        self.live_video_timestamp = time.time()
-        self.live_video_state = VideoState.PLAYING
-        app.socketio.emit('live_video_changed', video_id, room=self.id)
 
     def remove_playlist(self, playlist_id):
         updated_playlists = [playlist for playlist in self.playlists if playlist.id != playlist_id]
