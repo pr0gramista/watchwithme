@@ -2,17 +2,18 @@ import random
 import string
 import time
 
-
 from flask import Flask, url_for, render_template, make_response, redirect, abort
 from flask_socketio import SocketIO, join_room
 from . import config
 from . import youtube
+
+yt = youtube.YouTube(config.API)
+
 from .room import Room
 from .video import VideoState
 
 app = Flask(__name__)
 socketio = SocketIO(app)
-yt = youtube.YouTube(config.API)
 
 if __name__ == '__main__':
     socketio.run(app)
@@ -36,7 +37,8 @@ def handle_add_playlist(room_id, playlist_url):
         return abort(404)
 
     playlist_id = yt.get_playlist_id_from_url(playlist_url)
-    room.import_yt_playlist(playlist_id)
+    new_playlist = room.import_yt_playlist(playlist_id)
+    socketio.emit('playlist_added', new_playlist.__dict__, room=room_id)
 
 
 @socketio.on('remove_playlist')
@@ -45,7 +47,8 @@ def handle_add_playlist(room_id, playlist_id):
     if room is None:
         return abort(404)
 
-    room.remove_playlist(playlist_id)
+    if room.remove_playlist(playlist_id):
+        socketio.emit('playlist_removed', playlist_id, room=room_id)
 
 
 @socketio.on('live_change_video')
@@ -64,7 +67,7 @@ def handle_send_message(room_id, message):
     if room is None:
         return abort(404)
 
-    room.send_message(message)
+    socketio.emit('message_sent', message, room=room_id)
 
 
 @socketio.on('join')

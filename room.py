@@ -1,7 +1,6 @@
 import random
 import string
 
-from . import app
 from .playlist import Playlist
 from .live import Live
 
@@ -55,19 +54,27 @@ class Room:
         else:
             return self.live.video_timestamp
 
-    def send_message(self, message):
-        app.socketio.emit('message_sent', message, room=self.id)
-
     def remove_playlist(self, playlist_id):
+        """Removes playlist with given id.
+
+        :param playlist_id: id of playlist
+        :return: True is playlist was removed, False if no playlist was removed
+        """
         updated_playlists = [playlist for playlist in self.playlists if playlist.id != playlist_id]
         if len(updated_playlists) < len(self.playlists):
             self.playlists = updated_playlists
-            app.socketio.emit('playlist_removed', playlist_id, room=self.id)
+            return True
+        return False
 
     def import_yt_playlist(self, playlist_id):
+        """Imports playlist.
+
+        :param playlist_id: id of playlist
+        :return: newly added playlist
+        """
         new_playlist = Playlist(playlist_id)
         self.playlists.append(new_playlist)
-        app.socketio.emit('playlist_added', new_playlist.__dict__, room=self.id)
+        return new_playlist
 
     @staticmethod
     def __get_unique():
