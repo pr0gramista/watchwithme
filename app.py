@@ -8,15 +8,14 @@ from . import config
 from . import youtube
 
 yt = youtube.YouTube(config.API)
+app = Flask(__name__)
+socket_io = SocketIO(app)
 
 from .room import Room
 from .video import VideoState
 
-app = Flask(__name__)
-socketio = SocketIO(app)
-
 if __name__ == '__main__':
-    socketio.run(app)
+    socket_io.run(app)
 
 rooms = []
 
@@ -29,7 +28,7 @@ def get_room_with_id(id):
         return None
 
 
-@socketio.on('add_playlist')
+@socket_io.on('add_playlist')
 def handle_add_playlist(room_id, playlist_url):
     print(playlist_url)
     room = get_room_with_id(room_id)
@@ -38,20 +37,20 @@ def handle_add_playlist(room_id, playlist_url):
 
     playlist_id = yt.get_playlist_id_from_url(playlist_url)
     new_playlist = room.import_yt_playlist(playlist_id)
-    socketio.emit('playlist_added', new_playlist.__dict__, room=room_id)
+    socket_io.emit('playlist_added', new_playlist.__dict__, room=room_id)
 
 
-@socketio.on('remove_playlist')
+@socket_io.on('remove_playlist')
 def handle_add_playlist(room_id, playlist_id):
     room = get_room_with_id(room_id)
     if room is None:
         return abort(404)
 
     if room.remove_playlist(playlist_id):
-        socketio.emit('playlist_removed', playlist_id, room=room_id)
+        socket_io.emit('playlist_removed', playlist_id, room=room_id)
 
 
-@socketio.on('live_change_video')
+@socket_io.on('live_change_video')
 def handle_live_change(room_id, video_url):
     room = get_room_with_id(room_id)
     if room is None:
@@ -61,16 +60,16 @@ def handle_live_change(room_id, video_url):
     room.live.set_video(video_id)
 
 
-@socketio.on('send_message')
+@socket_io.on('send_message')
 def handle_send_message(room_id, message):
     room = get_room_with_id(room_id)
     if room is None:
         return abort(404)
 
-    socketio.emit('message_sent', message, room=room_id)
+    socket_io.emit('message_sent', message, room=room_id)
 
 
-@socketio.on('join')
+@socket_io.on('join')
 def handle_join(room_id):
     room = get_room_with_id(room_id)
     if room is None:
@@ -79,7 +78,7 @@ def handle_join(room_id):
     join_room(room_id)
 
 
-@socketio.on('pause')
+@socket_io.on('pause')
 def handle_pause(room_id, t):
     print('Pause: {}'.format(t))
     room = get_room_with_id(room_id)
@@ -87,10 +86,10 @@ def handle_pause(room_id, t):
         return abort(404)
 
     room.pause(t)
-    socketio.emit('pause', t, room=room_id, include_self=False)
+    socket_io.emit('pause', t, room=room_id, include_self=False)
 
 
-@socketio.on('play')
+@socket_io.on('play')
 def handle_play_at(room_id, t):
     print('Play: {}'.format(t))
     room = get_room_with_id(room_id)
@@ -98,7 +97,7 @@ def handle_play_at(room_id, t):
         return abort(404)
 
     room.play(t)
-    socketio.emit('play', t, room=room_id, include_self=False)
+    socket_io.emit('play', t, room=room_id, include_self=False)
 
 
 def get_unique(length):

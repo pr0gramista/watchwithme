@@ -1,6 +1,6 @@
 import time
 
-from . import app
+from .app import socket_io, yt
 from .video import VideoState
 
 
@@ -14,21 +14,21 @@ class Live:
         self.video_state = VideoState.PAUSED
 
     def add_video(self, video_id):
-        self.queue.append(app.yt.get_video(video_id))
-        app.socketio.emit('live_feed_video_added', video_id, room=self.room_id)
+        self.queue.append(yt.get_video(video_id))
+        socket_io.emit('live_feed_video_added', video_id, room=self.room_id)
 
     def remove_video(self, video_id):
         updated_queue = [video for video in self.queue if video.id != video_id]
         if len(updated_queue) < len(self.queue):
             self.queue = updated_queue
-            app.socketio.emit('live_feed_video_removed', video_id, room=self.room_id)
+            socket_io.emit('live_feed_video_removed', video_id, room=self.room_id)
 
     def set_video(self, video_id):
         self.video = video_id
         self.video_time = 0
         self.video_timestamp = time.time()
         self.video_state = VideoState.PLAYING
-        app.socketio.emit('live_video_changed', video_id, room=self.room_id)
+        socket_io.emit('live_video_changed', video_id, room=self.room_id)
 
     def play(self, t):
         self.video_time = t
