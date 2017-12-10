@@ -1,0 +1,31 @@
+{
+  "name": "watchwithme",
+  "version": "1.0.0",
+  "description": "Watch YouTube videos with friends!",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pr0gramista/watchwithme.git"
+  },
+  "author": "Bartosz Wiśniewski",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/pr0gramista/watchwithme/issues"
+  },
+  "homepage": "https://github.com/pr0gramista/watchwithme#readme",
+  "dependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  },
+  "devDependencies": {
+    "webpack": "^3.10.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1"
+  },
+  "scripts": {
+    "build": "node ./node_modules/webpack/bin/webpack.js -p",
+    "dev": "node ./node_modules/webpack/bin/webpack.js -d --watch"
+  }
+}
