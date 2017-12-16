@@ -2,6 +2,7 @@ import React from 'react';
 import FontIcon from 'material-ui/FontIcon';
 import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
 import Paper from 'material-ui/Paper';
+import Chat from './Chat.jsx';
 
 const chatIcon = <FontIcon className="material-icons">chat</FontIcon>;
 const listIcon = <FontIcon className="material-icons">list</FontIcon>;
@@ -24,7 +25,7 @@ export default class Sidebar extends React.Component {
         let current_content = null;
 
         if (selectedIndex === 0)
-            current_content = <p>this is 0</p>;
+            current_content = <Chat/>;
         else if(selectedIndex === 1)
             current_content = <p>this is 1</p>;
         else if(selectedIndex === 2)
