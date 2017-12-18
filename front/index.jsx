@@ -7,14 +7,17 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import wwmTheme from './wwmTheme.jsx';
 import io from 'socket.io-client';
+import socket from './Socket.jsx';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
 
-        window.socket = io('http://' + document.domain + ':' + location.port);
-        window.socket.on('connect', function () {
-            window.socket.emit('join', window.play.room);
+        let s = io('http://' + document.domain + ':' + location.port);
+        socket.init(window.play.room, s);
+
+        socket.io.on('connect', function () {
+            socket.join();
         });
     }
 
