@@ -1,12 +1,25 @@
 import React from 'react';
 
 export default class Player extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         this.player = null;
+
+        this.onPlayerReady = this.onPlayerReady.bind(this);
+        this.onPlayerStateChange = this.onPlayerStateChange.bind(this);
     }
 
-    componentDidMount () {
+    onPlayerReady(event) {
+        console.log("onPlayerReady! ");
+        console.log(event);
+    }
+
+    onPlayerStateChange(event) {
+        console.log("onPlayerStateChange");
+        console.log(event.data);
+    }
+
+    componentDidMount() {
         const tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         const firstScriptTag = document.getElementsByTagName('script')[0];
@@ -15,7 +28,11 @@ export default class Player extends React.Component {
         let youtube_api_ready = function onYouTubeIframeAPIReady() {
             this.player = new YT.Player('player', {
                 videoId: '1aEqd4bl6Bs',
-                playerVars: {'autoplay': 0 }
+                playerVars: {'autoplay': 0},
+                events: {
+                    'onReady': this.onPlayerReady,
+                    'onStateChange': this.onPlayerStateChange
+                }
             });
         };
         youtube_api_ready = youtube_api_ready.bind(this);
@@ -23,7 +40,7 @@ export default class Player extends React.Component {
 
     }
 
-    render () {
+    render() {
         return (
             <div id="player"></div>
         );
