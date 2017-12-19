@@ -13,9 +13,16 @@ export default class socket {
         sock.emit('join', room_id);
     }
 
+    static pause(time) {
+        sock.emit('pause', room_id, time);
+    }
+
+    static play(time) {
+        sock.emit('play', room_id, time);
+    }
+
     static send_chat_message(message) {
         sock.emit('send_message', room_id, message);
-        console.log("Message sent")
     }
 
     static get io() {

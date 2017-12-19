@@ -1,12 +1,47 @@
 import React from 'react';
+import socket from './Socket.jsx';
 
 export default class Player extends React.Component {
     constructor(props) {
         super(props);
         this.player = null;
 
+        this.stopFirst = false;
+        this.ignore = false;
+
         this.onPlayerReady = this.onPlayerReady.bind(this);
         this.onPlayerStateChange = this.onPlayerStateChange.bind(this);
+        this.onPlay = this.onPlay.bind(this);
+        this.onPause = this.onPause.bind(this);
+        this.supress = this.supress.bind(this);
+
+        socket.io.on('play', this.onPlay);
+        socket.io.on('pause', this.onPause);
+    }
+
+    supress() {
+        this.ignore = true;
+        setTimeout(function () {
+            this.ignore = false
+        }, 300)
+    }
+
+    onPlay(time) {
+        const player = this.player;
+        if (Math.abs(player.getCurrentTime() - time) > 3 || player.getPlayerState() !== 1) {
+            player.seekTo(time);
+            player.playVideo();
+            this.supress()
+        }
+    }
+
+    onPause(time) {
+        const player = this.player;
+        if (Math.abs(player.getCurrentTime() - time) > 3 || player.getPlayerState() !== 2) {
+            player.seekTo(time);
+            player.pauseVideo();
+            this.supress()
+        }
     }
 
     onPlayerReady(event) {
@@ -16,7 +51,18 @@ export default class Player extends React.Component {
 
     onPlayerStateChange(event) {
         console.log("onPlayerStateChange");
-        console.log(event.data);
+        if (this.stopFirst && event.data === 1) {
+            event.target.pauseVideo();
+            this.stopFirst = false;
+        }
+
+        if (!this.ignore) {
+            if (event.data === 2) {
+                socket.pause(this.player.getCurrentTime());
+            } else if (event.data === 1) {
+                socket.play(this.player.getCurrentTime());
+            }
+        }
     }
 
     componentDidMount() {
