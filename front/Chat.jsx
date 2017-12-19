@@ -5,7 +5,7 @@ import FontIcon from 'material-ui/FontIcon';
 import socket from './Socket.jsx';
 
 class ChatMessage extends React.Component {
-    render () {
+    render() {
         return (
             <li className="chat-message">{this.props.message}</li>
         );
@@ -52,8 +52,10 @@ export default class Chat extends React.Component {
                 </ul>
                 <div className="fl">
                     <form onSubmit={this.handleChatMessage} className="chat-form">
-                        <TextField hintText="Message" value={this.state.message} onChange={this.handleChatMessageChange} className="fl-grow"/>
-                        <IconButton onClick={this.handleChatMessage}><FontIcon className="material-icons">send</FontIcon></IconButton>
+                        <TextField hintText="Message" value={this.state.message} onChange={this.handleChatMessageChange}
+                                   className="fl-grow"/>
+                        <IconButton onClick={this.handleChatMessage}><FontIcon
+                            className="material-icons">send</FontIcon></IconButton>
                     </form>
                 </div>
             </div>

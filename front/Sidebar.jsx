@@ -26,9 +26,9 @@ export default class Sidebar extends React.Component {
 
         if (selectedIndex === 0)
             current_content = <Chat/>;
-        else if(selectedIndex === 1)
+        else if (selectedIndex === 1)
             current_content = <p>this is 1</p>;
-        else if(selectedIndex === 2)
+        else if (selectedIndex === 2)
             current_content = <p>this is 2</p>;
 
         return (
@@ -47,7 +47,7 @@ export default class Sidebar extends React.Component {
                         />
                         <BottomNavigationItem
                             label="Settings"
-                               icon={settingsIcon}
+                            icon={settingsIcon}
                             onClick={() => this.select(2)}
                         />
                     </BottomNavigation>
