@@ -37,19 +37,21 @@ export default class Sidebar extends React.Component {
             current_content = <Chat/>;
         else if (selectedIndex === 1)
             current_content = (
-                <SelectField
-                    id="playlistSelect"
-                    fullWidth={true}
-                    floatingLabelText="Playlist"
-                    value={this.state.currentPlaylist}
-                    onChange={this.handlePlaylistChange}
-                >
-                    <MenuItem value={0} primaryText="Music"/>
-                    <MenuItem value={1} primaryText="Funny videos"/>
-                    <MenuItem value={2} primaryText="Catbringer"/>
-                    <MenuItem value={3} primaryText="80s hits"/>
-                    <MenuItem value={4} primaryText="ASMR"/>
-                </SelectField>
+                <div id="playlist">
+                    <SelectField
+                        id="playlistSelect"
+                        fullWidth={true}
+                        floatingLabelText="Playlist"
+                        value={this.state.currentPlaylist}
+                        onChange={this.handlePlaylistChange}
+                    >
+                        <MenuItem value={0} primaryText="Music"/>
+                        <MenuItem value={1} primaryText="Funny videos"/>
+                        <MenuItem value={2} primaryText="Catbringer"/>
+                        <MenuItem value={3} primaryText="80s hits"/>
+                        <MenuItem value={4} primaryText="ASMR"/>
+                    </SelectField>
+                </div>
             );
         else if (selectedIndex === 2)
             current_content = <p>this is 2</p>;
