@@ -28,13 +28,11 @@ export default class Chat extends React.Component {
     }
 
     onMessageSent(message) {
-        console.log(message);
         this.setState({messages: this.state.messages.concat([message])});
     }
 
     handleChatMessage(event) {
         event.preventDefault();
-        console.log(this.state.message);
         socket.send_chat_message(this.state.message);
         this.setState({message: ''});
     }
@@ -50,7 +48,7 @@ export default class Chat extends React.Component {
                 <ul id="messages">
                     {chatMessages}
                 </ul>
-                <div className="fl">
+                <div id="chat-form" className="fl">
                     <form onSubmit={this.handleChatMessage} className="chat-form">
                         <TextField hintText="Message" value={this.state.message} onChange={this.handleChatMessageChange}
                                    className="fl-grow"/>
