@@ -2,11 +2,16 @@
 
 let sock;
 let room_id;
+let nickname;
 
 export default class socket {
     static init(_room_id, _socketio) {
         sock = _socketio;
         room_id = _room_id;
+    }
+
+    static setNickname(_nickname) {
+        nickname = _nickname;
     }
 
     static join() {
@@ -22,7 +27,7 @@ export default class socket {
     }
 
     static send_chat_message(message) {
-        sock.emit('send_message', room_id, message);
+        sock.emit('send_message', room_id, nickname + ": " + message);
     }
 
     static get io() {

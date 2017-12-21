@@ -14,6 +14,7 @@
   },
   "homepage": "https://github.com/pr0gramista/watchwithme#readme",
   "dependencies": {
+    "js-cookie": "^2.2.0",
     "material-ui": "^0.20.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
