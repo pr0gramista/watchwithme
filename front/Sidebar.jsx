@@ -4,6 +4,8 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
 import Paper from 'material-ui/Paper';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import Chat from './Chat.jsx';
 
 const chatIcon = <FontIcon className="material-icons">chat</FontIcon>;
@@ -51,6 +53,9 @@ export default class Sidebar extends React.Component {
                         <MenuItem value={3} primaryText="80s hits"/>
                         <MenuItem value={4} primaryText="ASMR"/>
                     </SelectField>
+                    <FloatingActionButton style={{position: "absolute", bottom: 20, right: 20}}>
+                        <ContentAdd/>
+                    </FloatingActionButton>
                 </div>
             );
         else if (selectedIndex === 2)
