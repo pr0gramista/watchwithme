@@ -11,6 +11,9 @@ import io from 'socket.io-client';
 import socket from './Socket.jsx';
 import Cookies from 'js-cookie';
 import FlatButton from 'material-ui/FlatButton';
+import {Provider} from 'react-redux'
+import {createStore} from 'redux'
+import wwmApp from './store/reducers.jsx'
 
 class App extends React.Component {
     constructor(props) {
@@ -81,4 +84,10 @@ class App extends React.Component {
     }
 }
 
-render(<App/>, document.getElementById('app'));
+console.log(wwmApp);
+let store = createStore(wwmApp);
+
+render(
+    <Provider store={store}>
+        <App/>
+    </Provider>, document.getElementById('app'));

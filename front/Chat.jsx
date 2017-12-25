@@ -3,6 +3,8 @@ import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import socket from './Socket.jsx';
+import {connect} from 'react-redux';
+import receiveMessage from './store/actions.jsx';
 
 class ChatMessage extends React.Component {
     render() {
@@ -12,12 +14,12 @@ class ChatMessage extends React.Component {
     }
 }
 
-export default class Chat extends React.Component {
+class Chat extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
-            message: '',
-            messages: []
+            message: ''
         };
 
         this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
@@ -28,7 +30,7 @@ export default class Chat extends React.Component {
     }
 
     onMessageSent(message) {
-        this.setState({messages: this.state.messages.concat([message])});
+        this.props.dispatch(receiveMessage(message))
     }
 
     handleChatMessage(event) {
@@ -42,7 +44,12 @@ export default class Chat extends React.Component {
     }
 
     render() {
-        const chatMessages = this.state.messages.map((message, index) => <ChatMessage key={index} message={message}/>);
+        let chatMessages = "hello";
+        if (this.props.messages !== undefined) {
+            chatMessages = this.props.messages.map((message, index) => <ChatMessage key={index}
+                                                                                    message={message}/>);
+        }
+
         return (
             <div id="chat">
                 <ul id="messages">
@@ -60,3 +67,9 @@ export default class Chat extends React.Component {
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return {messages: state.messages};
+};
+
+export default Chat = connect(mapStateToProps)(Chat);
