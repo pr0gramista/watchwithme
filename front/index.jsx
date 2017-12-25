@@ -84,7 +84,6 @@ class App extends React.Component {
     }
 }
 
-console.log(wwmApp);
 let store = createStore(wwmApp);
 
 render(

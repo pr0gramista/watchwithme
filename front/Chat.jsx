@@ -44,11 +44,7 @@ class Chat extends React.Component {
     }
 
     render() {
-        let chatMessages = "hello";
-        if (this.props.messages !== undefined) {
-            chatMessages = this.props.messages.map((message, index) => <ChatMessage key={index}
-                                                                                    message={message}/>);
-        }
+        const chatMessages = this.props.messages.map((message, index) => <ChatMessage key={index} message={message}/>);
 
         return (
             <div id="chat">
