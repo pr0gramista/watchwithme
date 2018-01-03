@@ -2,7 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import Sidebar from './Sidebar.jsx';
 import Player from './Player.jsx';
-import './sass/main.scss';
+import main from './sass/main.scss';
 import UsernameDialog from './UsernameDialog.jsx';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';

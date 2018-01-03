@@ -1,3 +1,9 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
 #app {
   height: 100vh;
 }
@@ -10,11 +16,17 @@
 
 #player {
   width: 75%;
+  height: 100%;
 }
 
 #sidebar {
+  display: flex;
+  flex-direction: column;
+  position: relative;
   width: 25%;
   height: 100%;
+  background-color: #283593;
+  color: #FFF;
 }
 
 .fl {
