@@ -13,13 +13,13 @@ export default class Player extends React.Component {
         this.onPlayerStateChange = this.onPlayerStateChange.bind(this);
         this.onPlay = this.onPlay.bind(this);
         this.onPause = this.onPause.bind(this);
-        this.supress = this.supress.bind(this);
+        this.suppress = this.suppress.bind(this);
 
         socket.io.on('play', this.onPlay);
         socket.io.on('pause', this.onPause);
     }
 
-    supress() {
+    suppress() {
         this.ignore = true;
         setTimeout(function () {
             this.ignore = false
@@ -31,7 +31,7 @@ export default class Player extends React.Component {
         if (Math.abs(player.getCurrentTime() - time) > 3 || player.getPlayerState() !== 1) {
             player.seekTo(time);
             player.playVideo();
-            this.supress()
+            this.suppress()
         }
     }
 
@@ -40,7 +40,7 @@ export default class Player extends React.Component {
         if (Math.abs(player.getCurrentTime() - time) > 3 || player.getPlayerState() !== 2) {
             player.seekTo(time);
             player.pauseVideo();
-            this.supress()
+            this.suppress()
         }
     }
 

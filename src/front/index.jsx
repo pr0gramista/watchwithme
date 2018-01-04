@@ -2,7 +2,6 @@ import React from 'react';
 import {render} from 'react-dom';
 import Sidebar from './Sidebar.jsx';
 import Player from './Player.jsx';
-import main from './sass/main.scss';
 import UsernameDialog from './UsernameDialog.jsx';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -19,17 +18,18 @@ class App extends React.Component {
     constructor(props) {
         super(props);
 
-        console.log("Cookie: " + Cookies.get('nickname'));
+        this.handleSetNickname = this.handleSetNickname.bind(this);
+        this.handleGoAnonymously = this.handleGoAnonymously.bind(this);
+        this.handleOnNicknameChange = this.handleOnNicknameChange.bind(this);
+
+        // Get nickname
         this.state = {
             open: Cookies.get('nickname') === undefined,
             nickname: ""
         };
         socket.setNickname(Cookies.get('nickname') || 'I am ugly');
 
-        this.handleSetNickname = this.handleSetNickname.bind(this);
-        this.handleGoAnonymously = this.handleGoAnonymously.bind(this);
-        this.handleOnNicknameChange = this.handleOnNicknameChange.bind(this);
-
+        // Connect with server
         let s = io('http://' + document.domain + ':' + location.port);
         socket.init(window.play.room, s);
 
