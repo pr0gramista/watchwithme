@@ -1,5 +1,15 @@
 const initialState = {
-    messages: []
+    messages: [],
+    playlists: [ // Example fake playlists
+        {
+            'id': '3gk3kg9ok3g',
+            'title': 'cheekybreeky'
+        },
+        {
+            'id': 'ogk3g093ko',
+            'title': 'Music for coding'
+        }
+    ]
 };
 
 function wwmApp(state = initialState, action) {

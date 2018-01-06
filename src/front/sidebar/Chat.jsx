@@ -2,9 +2,9 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
-import socket from './Socket.jsx';
+import socket from '../Socket.jsx';
 import {connect} from 'react-redux';
-import receiveMessage from './store/actions.jsx';
+import receiveMessage from '../store/actions.jsx';
 
 class ChatMessage extends React.Component {
     render() {

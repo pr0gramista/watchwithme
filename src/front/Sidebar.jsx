@@ -1,12 +1,9 @@
 import React from 'react';
 import FontIcon from 'material-ui/FontIcon';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
 import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
 import Paper from 'material-ui/Paper';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import Chat from './Chat.jsx';
+import Chat from './sidebar/Chat.jsx';
+import Playlists from './sidebar/Playlists.jsx';
 
 const chatIcon = <FontIcon className="material-icons">chat</FontIcon>;
 const listIcon = <FontIcon className="material-icons">list</FontIcon>;
@@ -17,18 +14,11 @@ export default class Sidebar extends React.Component {
         super(props);
         this.state = {
             selectedIndex: 0,
-            currentPlaylist: 0,
         };
-
-        this.handlePlaylistChange = this.handlePlaylistChange.bind(this);
     }
 
     select(index) {
         this.setState({selectedIndex: index});
-    }
-
-    handlePlaylistChange(event, index, value) {
-        this.setState({currentPlaylist: value});
     }
 
     render() {
@@ -38,26 +28,7 @@ export default class Sidebar extends React.Component {
         if (selectedIndex === 0)
             current_content = <Chat/>;
         else if (selectedIndex === 1)
-            current_content = (
-                <div id="playlist">
-                    <SelectField
-                        id="playlistSelect"
-                        fullWidth={true}
-                        floatingLabelText="Playlist"
-                        value={this.state.currentPlaylist}
-                        onChange={this.handlePlaylistChange}
-                    >
-                        <MenuItem value={0} primaryText="Music"/>
-                        <MenuItem value={1} primaryText="Funny videos"/>
-                        <MenuItem value={2} primaryText="Catbringer"/>
-                        <MenuItem value={3} primaryText="80s hits"/>
-                        <MenuItem value={4} primaryText="ASMR"/>
-                    </SelectField>
-                    <FloatingActionButton style={{position: "absolute", bottom: 20, right: 20}}>
-                        <ContentAdd/>
-                    </FloatingActionButton>
-                </div>
-            );
+            current_content = <Playlists/>;
         else if (selectedIndex === 2)
             current_content = <p>this is 2</p>;
 
