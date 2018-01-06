@@ -13,6 +13,7 @@ import FlatButton from 'material-ui/FlatButton';
 import {Provider} from 'react-redux'
 import {createStore} from 'redux'
 import wwmApp from './store/reducers.jsx'
+import './sass/main.scss'
 
 class App extends React.Component {
     constructor(props) {
