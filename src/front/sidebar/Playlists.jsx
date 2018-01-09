@@ -8,6 +8,22 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 
+class PlaylistDisplay extends React.Component {
+    render() {
+        const videoItems = this.props.playlist.videos.map((video, index) =>
+            <li key={video.id} className="video">
+                <img src={video.thumbnail}/>
+                <h1>{video.title}</h1>
+            </li>);
+
+        return (
+            <ul className="playlist">
+                {videoItems}
+            </ul>
+        );
+    }
+}
+
 
 class Playlists extends React.Component {
     constructor(props) {
@@ -62,6 +78,11 @@ class Playlists extends React.Component {
             />,
         ];
 
+        let display = null;
+        if (this.state.currentPlaylist !== null) {
+            display = <PlaylistDisplay playlist={this.state.currentPlaylist}/>;
+        }
+
         return (
             <div id="playlist">
                 <SelectField
@@ -77,6 +98,7 @@ class Playlists extends React.Component {
                                       style={{position: "absolute", bottom: 20, right: 20}}>
                     <ContentAdd/>
                 </FloatingActionButton>
+                {display}
                 <Dialog
                     title="Add playlist"
                     actions={actions}

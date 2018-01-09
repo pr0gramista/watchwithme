@@ -2,12 +2,27 @@ const initialState = {
     messages: [],
     playlists: [ // Example fake playlists
         {
-            'id': '3gk3kg9ok3g',
-            'title': 'cheekybreeky'
+            'id': 'PLC90FB71F6ECE17F3',
+            'title': 'Hits of the 70\'s,80\'s,90\'s(1)',
+            'videos': [{
+                'id': 'y6120QOlsfU',
+                'title': 'Darude - Sandstorm',
+                'thumbnail': 'https://i.ytimg.com/vi/y6120QOlsfU/hqdefault.jpg'
+            }]
         },
         {
-            'id': 'ogk3g093ko',
-            'title': 'Music for coding'
+            'id': 'RDpmxYePDPV6M',
+            'title': 'Concentration \\ Programming Music 010 (part 2)',
+            'videos': [{
+                'id': 'y6120QOlsfU',
+                'title': 'Darude - Sandstorm',
+                'thumbnail': 'https://i.ytimg.com/vi/y6120QOlsfU/hqdefault.jpg'
+            },
+                {
+                    'id': 'Be0OAjuk_1k',
+                    'title': 'Scatman John - Scatman (Extended Mix) 1995',
+                    'thumbnail': 'https://i.ytimg.com/vi/Be0OAjuk_1k/hqdefault.jpg'
+                }]
         }
     ]
 };
