@@ -7,6 +7,7 @@ import Dialog from 'material-ui/Dialog';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
+import {setCurrentPlaylist} from '../store/actions.jsx';
 
 class PlaylistDisplay extends React.Component {
     render() {
@@ -42,7 +43,8 @@ class Playlists extends React.Component {
     }
 
     handlePlaylistChange(event, index, value) {
-        this.setState({currentPlaylist: value});
+        // TOOD
+        this.props.setCurrentPlaylist(value);
     }
 
     handleAddPlaylist() {
@@ -79,8 +81,8 @@ class Playlists extends React.Component {
         ];
 
         let display = null;
-        if (this.state.currentPlaylist !== null) {
-            display = <PlaylistDisplay playlist={this.state.currentPlaylist}/>;
+        if (this.props.currentPlaylist !== null) {
+            display = <PlaylistDisplay playlist={this.props.currentPlaylist}/>;
         }
 
         return (
@@ -89,7 +91,7 @@ class Playlists extends React.Component {
                     id="playlistSelect"
                     fullWidth={true}
                     floatingLabelText="Playlist"
-                    value={this.state.currentPlaylist}
+                    value={this.props.currentPlaylist}
                     onChange={this.handlePlaylistChange}
                 >
                     {playlistsItems}
@@ -118,7 +120,18 @@ class Playlists extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    return {playlists: state.playlists};
+    return {
+        playlists: state.playlists,
+        currentPlaylist: state.currentPlaylist
+    };
 };
 
-export default Playlists = connect(mapStateToProps)(Playlists);
+const mapDispatchToProps = dispatch => {
+    return {
+        setCurrentPlaylist: playlist => {
+            dispatch(setCurrentPlaylist(playlist))
+        }
+    }
+};
+
+export default Playlists = connect(mapStateToProps, mapDispatchToProps)(Playlists);

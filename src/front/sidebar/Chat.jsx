@@ -4,7 +4,7 @@ import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import socket from '../Socket.jsx';
 import {connect} from 'react-redux';
-import receiveMessage from '../store/actions.jsx';
+import {receiveMessage} from '../store/actions.jsx';
 
 class ChatMessage extends React.Component {
     render() {
@@ -29,7 +29,7 @@ class Chat extends React.Component {
     }
 
     onMessageSent(message) {
-        this.props.dispatch(receiveMessage(message))
+        this.props.receiveMessage(message);
     }
 
     handleChatMessage(event) {
@@ -67,4 +67,12 @@ const mapStateToProps = (state) => {
     return {messages: state.messages};
 };
 
-export default Chat = connect(mapStateToProps)(Chat);
+const mapDispatchToProps = dispatch => {
+    return {
+        receiveMessage: messsage => {
+            dispatch(receiveMessage(messsage))
+        }
+    }
+};
+
+export default Chat = connect(mapStateToProps, mapDispatchToProps)(Chat);

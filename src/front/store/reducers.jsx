@@ -1,5 +1,6 @@
 const initialState = {
     messages: [],
+    currentPlaylist: null,
     playlists: [ // Example fake playlists
         {
             'id': 'PLC90FB71F6ECE17F3',
@@ -32,6 +33,10 @@ function wwmApp(state = initialState, action) {
         case 'RECEIVE_MESSAGE':
             return Object.assign({}, state, {
                 messages: state.messages.concat([action.text])
+            });
+        case 'SET_CURRENT_PLAYLIST':
+            return Object.assign({}, state, {
+                currentPlaylist: action.playlist
             });
         default:
             return state
