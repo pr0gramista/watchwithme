@@ -4,29 +4,51 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+$small: 600px;
+
 #app {
   height: 100vh;
+
+  @media (max-width: $small) {
+    height: auto;
+  }
 }
 
 #main {
   display: flex;
   flex-direction: row;
   height: 100%;
+
+  @media (max-width: $small) {
+    flex-direction: column;
+  }
 }
 
 #player {
-  width: 75%;
+  flex-grow: 1;
   height: 100%;
+
+  @media (max-width: $small) {
+    width: 100%;
+    height: 100vh;
+  }
 }
 
 #sidebar {
+  flex-shrink: 0;
+  flex-grow: 0;
   display: flex;
   flex-direction: column;
   position: relative;
-  width: 25%;
+  width: 300px;
   height: 100%;
   background-color: #283593;
   color: #FFF;
+
+  @media (max-width: $small) {
+    width: 100%;
+    min-height: 600px;
+  }
 }
 
 .fl {
