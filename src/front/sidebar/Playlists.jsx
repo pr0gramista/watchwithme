@@ -7,7 +7,8 @@ import Dialog from 'material-ui/Dialog';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
-import {setCurrentPlaylist} from '../store/actions.jsx';
+import {addPlaylist, setCurrentPlaylist} from '../store/actions.jsx';
+import socket from '../Socket.jsx';
 
 class PlaylistDisplay extends React.Component {
     render() {
@@ -40,15 +41,23 @@ class Playlists extends React.Component {
         this.handlePlaylistChange = this.handlePlaylistChange.bind(this);
         this.onPlaylistStringChange = this.onPlaylistStringChange.bind(this);
         this.handleAddPlaylistDialogFAB = this.handleAddPlaylistDialogFAB.bind(this);
+        this.onPlaylistAdded = this.onPlaylistAdded.bind(this);
+
+        socket.io.on('playlist_added', this.onPlaylistAdded);
+    }
+
+    onPlaylistAdded(playlist) {
+        console.log(playlist);
+        this.props.addPlaylist(playlist);
     }
 
     handlePlaylistChange(event, index, value) {
-        // TOOD
+        // TODO
         this.props.setCurrentPlaylist(value);
     }
 
     handleAddPlaylist() {
-        // TODO: Send playlist id/url to the server
+        socket.add_playlist(this.state.addPlaylistString);
         this.setState({dialogOpened: false, addPlaylistString: ""});
     }
 
@@ -130,6 +139,9 @@ const mapDispatchToProps = dispatch => {
     return {
         setCurrentPlaylist: playlist => {
             dispatch(setCurrentPlaylist(playlist))
+        },
+        addPlaylist: playlist => {
+            dispatch(addPlaylist(playlist))
         }
     }
 };

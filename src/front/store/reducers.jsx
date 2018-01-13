@@ -14,16 +14,18 @@ const initialState = {
         {
             'id': 'RDpmxYePDPV6M',
             'title': 'Concentration \\ Programming Music 010 (part 2)',
-            'videos': [{
-                'id': 'y6120QOlsfU',
-                'title': 'Darude - Sandstorm',
-                'thumbnail': 'https://i.ytimg.com/vi/y6120QOlsfU/hqdefault.jpg'
-            },
+            'videos': [
+                {
+                    'id': 'y6120QOlsfU',
+                    'title': 'Darude - Sandstorm',
+                    'thumbnail': 'https://i.ytimg.com/vi/y6120QOlsfU/hqdefault.jpg'
+                },
                 {
                     'id': 'Be0OAjuk_1k',
                     'title': 'Scatman John - Scatman (Extended Mix) 1995',
                     'thumbnail': 'https://i.ytimg.com/vi/Be0OAjuk_1k/hqdefault.jpg'
-                }]
+                }
+            ]
         }
     ]
 };
@@ -37,6 +39,10 @@ function wwmApp(state = initialState, action) {
         case 'SET_CURRENT_PLAYLIST':
             return Object.assign({}, state, {
                 currentPlaylist: action.playlist
+            });
+        case 'ADD_PLAYLIST':
+            return Object.assign({}, state, {
+                playlists: state.playlists.concat([action.playlist])
             });
         default:
             return state

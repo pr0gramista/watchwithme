@@ -30,6 +30,10 @@ export default class socket {
         sock.emit('send_message', room_id, nickname + ": " + message);
     }
 
+    static add_playlist(url) {
+        sock.emit('add_playlist', room_id, url);
+    }
+
     static get io() {
         return sock;
     }
