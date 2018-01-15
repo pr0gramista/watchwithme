@@ -34,6 +34,10 @@ export default class socket {
         sock.emit('add_playlist', room_id, url);
     }
 
+    static change_playlist(playlistId) {
+        sock.emit('change_playlist', room_id, playlistId)
+    }
+
     static get io() {
         return sock;
     }

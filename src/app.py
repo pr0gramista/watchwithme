@@ -4,6 +4,7 @@ import time
 
 from flask import Flask, url_for, render_template, make_response, redirect, abort
 from flask_socketio import SocketIO, join_room
+
 from . import config
 from . import youtube
 
@@ -26,6 +27,16 @@ def get_room_with_id(id):
         return r[0]
     else:
         return None
+
+
+@socket_io.on('change_playlist')
+def handle_add_playlist(room_id, playlist_id):
+    room = get_room_with_id(room_id)
+    if room is None:
+        return abort(404)
+
+    if len([playlist for playlist in room.playlists if playlist.id == playlist_id]):
+        socket_io.emit('playlist_changed', playlist_id, room=room_id)
 
 
 @socket_io.on('add_playlist')

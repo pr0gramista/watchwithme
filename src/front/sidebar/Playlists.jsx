@@ -42,8 +42,21 @@ class Playlists extends React.Component {
         this.onPlaylistStringChange = this.onPlaylistStringChange.bind(this);
         this.handleAddPlaylistDialogFAB = this.handleAddPlaylistDialogFAB.bind(this);
         this.onPlaylistAdded = this.onPlaylistAdded.bind(this);
+        this.onPlaylistChanged = this.onPlaylistChanged.bind(this);
 
         socket.io.on('playlist_added', this.onPlaylistAdded);
+        socket.io.on('playlist_changed', this.onPlaylistChanged)
+    }
+
+    onPlaylistChanged(playlistId) {
+        let playlist = this.props.playlists.find(function (playlist) {
+            return playlist.id === playlistId;
+        });
+
+        if (playlist !== undefined)
+            this.props.setCurrentPlaylist(playlist);
+        else
+            console.error("Playlist changed, but it doesn't exist locally.")
     }
 
     onPlaylistAdded(playlist) {
@@ -52,7 +65,8 @@ class Playlists extends React.Component {
     }
 
     handlePlaylistChange(event, index, value) {
-        // TODO
+        console.log(value);
+        socket.change_playlist(value.id);
         this.props.setCurrentPlaylist(value);
     }
 
