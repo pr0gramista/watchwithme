@@ -7,7 +7,7 @@ import Dialog from 'material-ui/Dialog';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
-import {addPlaylist, setCurrentPlaylist} from '../store/actions.jsx';
+import {setCurrentPlaylist} from '../store/actions.jsx';
 import socket from '../Socket.jsx';
 
 class PlaylistDisplay extends React.Component {
@@ -41,27 +41,6 @@ class Playlists extends React.Component {
         this.handlePlaylistChange = this.handlePlaylistChange.bind(this);
         this.onPlaylistStringChange = this.onPlaylistStringChange.bind(this);
         this.handleAddPlaylistDialogFAB = this.handleAddPlaylistDialogFAB.bind(this);
-        this.onPlaylistAdded = this.onPlaylistAdded.bind(this);
-        this.onPlaylistChanged = this.onPlaylistChanged.bind(this);
-
-        socket.io.on('playlist_added', this.onPlaylistAdded);
-        socket.io.on('playlist_changed', this.onPlaylistChanged)
-    }
-
-    onPlaylistChanged(playlistId) {
-        let playlist = this.props.playlists.find(function (playlist) {
-            return playlist.id === playlistId;
-        });
-
-        if (playlist !== undefined)
-            this.props.setCurrentPlaylist(playlist);
-        else
-            console.error("Playlist changed, but it doesn't exist locally.")
-    }
-
-    onPlaylistAdded(playlist) {
-        console.log(playlist);
-        this.props.addPlaylist(playlist);
     }
 
     handlePlaylistChange(event, index, value) {
@@ -153,9 +132,6 @@ const mapDispatchToProps = dispatch => {
     return {
         setCurrentPlaylist: playlist => {
             dispatch(setCurrentPlaylist(playlist))
-        },
-        addPlaylist: playlist => {
-            dispatch(addPlaylist(playlist))
         }
     }
 };

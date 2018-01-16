@@ -1,13 +1,30 @@
-// Dirty
+import {addPlaylist, receiveMessage, setCurrentPlaylist} from "./store/actions.jsx";
 
 let sock;
 let room_id;
 let nickname;
 
 export default class socket {
-    static init(_room_id, _socketio) {
+    static init(_room_id, _socketio, store) {
         sock = _socketio;
         room_id = _room_id;
+
+        socket.io.on('message_sent', function (message) {
+            store.dispatch(receiveMessage(message));
+        });
+        socket.io.on('playlist_added', function (playlist) {
+            store.dispatch(addPlaylist(playlist));
+        });
+        socket.io.on('playlist_changed', function (playlistId) {
+            let playlist = store.getState().playlists.find(function (playlist) {
+                return playlist.id === playlistId;
+            });
+
+            if (playlist !== undefined)
+                store.dispatch(setCurrentPlaylist(playlist));
+            else
+                console.error("Playlist changed, but it doesn't exist locally.")
+        })
     }
 
     static setNickname(_nickname) {
