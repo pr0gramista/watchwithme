@@ -26,8 +26,11 @@ class Chat extends React.Component {
 
     handleChatMessage(event) {
         event.preventDefault();
-        socket.send_chat_message(this.state.message);
-        this.setState({message: ''});
+
+        if (this.state.message.length > 0) {
+            socket.send_chat_message(this.state.message);
+            this.setState({message: ''});
+        }
     }
 
     handleChatMessageChange(event) {
