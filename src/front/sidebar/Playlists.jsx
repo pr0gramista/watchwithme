@@ -10,6 +10,9 @@ import FlatButton from 'material-ui/FlatButton';
 import {setCurrentPlaylist} from '../store/actions.jsx';
 import socket from '../Socket.jsx';
 
+const LIVE = "live";
+
+
 class PlaylistDisplay extends React.Component {
     render() {
         const videoItems = this.props.playlist.videos.map((video, index) =>
@@ -22,6 +25,16 @@ class PlaylistDisplay extends React.Component {
             <ul className="playlist">
                 {videoItems}
             </ul>
+        );
+    }
+}
+
+
+class LivePlaylistDisplay extends React.Component {
+    render() {
+        return (
+            <div>History:</div>
+            // TODO: implement live history #14
         );
     }
 }
@@ -45,8 +58,13 @@ class Playlists extends React.Component {
 
     handlePlaylistChange(event, index, value) {
         console.log(value);
-        socket.change_playlist(value.id);
-        this.props.setCurrentPlaylist(value);
+        if (value === LIVE) {
+            socket.change_playlist(LIVE);
+            this.props.setCurrentPlaylist(LIVE);
+        } else {
+            socket.change_playlist(value.id);
+            this.props.setCurrentPlaylist(value);
+        }
     }
 
     handleAddPlaylist() {
@@ -67,9 +85,11 @@ class Playlists extends React.Component {
     }
 
     render() {
-        const playlistsItems = this.props.playlists.map((playlist, index) => <MenuItem key={playlist.id}
-                                                                                       value={playlist}
-                                                                                       primaryText={playlist.title}/>);
+        let playlistsItems = this.props.playlists.map((playlist, index) => <MenuItem key={playlist.id}
+                                                                                     value={playlist}
+                                                                                     primaryText={playlist.title}/>);
+        playlistsItems.unshift(<MenuItem key={"live"} value={LIVE} primaryText={"🔴 Live"}/>);
+
         const actions = [
             <FlatButton
                 label="Close"
@@ -83,9 +103,11 @@ class Playlists extends React.Component {
         ];
 
         let display = null;
-        if (this.props.currentPlaylist !== null) {
-            display = <PlaylistDisplay playlist={this.props.currentPlaylist}/>;
-        }
+        if (this.props.currentPlaylist !== null)
+            if (this.props.currentPlaylist !== LIVE)
+                display = <PlaylistDisplay playlist={this.props.currentPlaylist}/>;
+            else
+                display = <LivePlaylistDisplay/>;
 
         return (
             <div id="playlist">

@@ -1,6 +1,6 @@
 const initialState = {
     messages: [],
-    currentPlaylist: null,
+    currentPlaylist: "live",
     playlists: []
 };
 
