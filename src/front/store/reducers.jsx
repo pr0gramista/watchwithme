@@ -1,4 +1,5 @@
 const initialState = {
+    nickname: 'Anonymous',
     messages: [],
     currentPlaylist: "live",
     playlists: [],
@@ -26,6 +27,10 @@ function wwmApp(state = initialState, action) {
         case 'ADD_TO_HISTORY':
             return Object.assign({}, state, {
                 liveHistory: state.liveHistory.concat([action.video])
+            });
+        case 'SET_NICKNAME':
+            return Object.assign({}, state, {
+                nickname: action.nickname
             });
         default:
             return state

@@ -2,12 +2,13 @@ import {addPlaylist, receiveMessage, setCurrentPlaylist} from "./store/actions.j
 
 let sock;
 let room_id;
-let nickname;
+let store;
 
 export default class socket {
-    static init(_room_id, _socketio, store) {
+    static init(_room_id, _socketio, _store) {
         sock = _socketio;
         room_id = _room_id;
+        store = _store;
 
         socket.io.on('message_sent', function (message) {
             store.dispatch(receiveMessage(message));
@@ -27,10 +28,6 @@ export default class socket {
         })
     }
 
-    static setNickname(_nickname) {
-        nickname = _nickname;
-    }
-
     static join() {
         sock.emit('join', room_id);
     }
@@ -44,7 +41,7 @@ export default class socket {
     }
 
     static send_chat_message(message) {
-        sock.emit('send_message', room_id, nickname + ": " + message);
+        sock.emit('send_message', room_id, store.getState().nickname + ": " + message);
     }
 
     static add_playlist(url) {
