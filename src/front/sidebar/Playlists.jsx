@@ -32,9 +32,19 @@ class PlaylistDisplay extends React.Component {
 
 class LivePlaylistDisplay extends React.Component {
     render() {
+        const historyItems = this.props.history.map((video, index) =>
+            <li key={video.id} className="video">
+                <img src={video.thumbnail}/>
+                <h1>{video.title}</h1>
+            </li>);
+
         return (
-            <div>History:</div>
-            // TODO: implement live history #14
+            <div className="history">
+                <h3>History</h3>
+                <ul className="playlist">
+                    {historyItems}
+                </ul>
+            </div>
         );
     }
 }
@@ -57,14 +67,12 @@ class Playlists extends React.Component {
     }
 
     handlePlaylistChange(event, index, value) {
-        console.log(value);
         if (value === LIVE) {
             socket.change_playlist(LIVE);
-            this.props.setCurrentPlaylist(LIVE);
         } else {
             socket.change_playlist(value.id);
-            this.props.setCurrentPlaylist(value);
         }
+        this.props.setCurrentPlaylist(value);
     }
 
     handleAddPlaylist() {
@@ -107,7 +115,7 @@ class Playlists extends React.Component {
             if (this.props.currentPlaylist !== LIVE)
                 display = <PlaylistDisplay playlist={this.props.currentPlaylist}/>;
             else
-                display = <LivePlaylistDisplay/>;
+                display = <LivePlaylistDisplay history={this.props.liveHistory}/>;
 
         return (
             <div id="playlist">
@@ -146,7 +154,8 @@ class Playlists extends React.Component {
 const mapStateToProps = (state) => {
     return {
         playlists: state.playlists,
-        currentPlaylist: state.currentPlaylist
+        currentPlaylist: state.currentPlaylist,
+        liveHistory: state.liveHistory
     };
 };
 

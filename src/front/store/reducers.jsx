@@ -1,7 +1,12 @@
 const initialState = {
     messages: [],
     currentPlaylist: "live",
-    playlists: []
+    playlists: [],
+    liveHistory: [{
+        'id': "y6120QOlsfU",
+        'title': "Darude - Sandstorm",
+        'thumbnail': "https://i.ytimg.com/vi/y6120QOlsfU/hqdefault.jpg"
+    }]
 };
 
 function wwmApp(state = initialState, action) {
@@ -18,9 +23,13 @@ function wwmApp(state = initialState, action) {
             return Object.assign({}, state, {
                 playlists: state.playlists.concat([action.playlist])
             });
+        case 'ADD_TO_HISTORY':
+            return Object.assign({}, state, {
+                liveHistory: state.liveHistory.concat([action.video])
+            });
         default:
             return state
     }
 }
 
-export default wwmApp
+export default wwmApp;

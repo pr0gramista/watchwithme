@@ -1,6 +1,7 @@
 const RECEIVE_MESSAGE = 'RECEIVE_MESSAGE';
 const SET_CURRENT_PLAYLIST = 'SET_CURRENT_PLAYLIST';
 const ADD_PLAYLIST = 'ADD_PLAYLIST';
+const ADD_TO_HISTORY = 'ADD_TO_HISTORY';
 
 export const receiveMessage = text => {
     return {
@@ -20,5 +21,12 @@ export const addPlaylist = playlist => {
     return {
         type: ADD_PLAYLIST,
         playlist
+    }
+};
+
+export const addToHistory = video => {
+    return {
+        type: ADD_TO_HISTORY,
+        video
     }
 };
