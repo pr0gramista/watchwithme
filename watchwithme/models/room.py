@@ -1,7 +1,7 @@
 import random
 import string
 
-from src.models.playlist import Playlist
+from watchwithme.models.playlist import Playlist
 from .live import Live
 
 

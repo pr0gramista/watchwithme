@@ -12,7 +12,7 @@ yt = youtube.YouTube(config.API)
 app = Flask(__name__)
 socket_io = SocketIO(app)
 
-from src.models.room import Room
+from watchwithme.models.room import Room
 from .video_state import VideoState
 
 if __name__ == '__main__':

@@ -2,7 +2,7 @@
   "name": "watchwithme",
   "version": "1.0.0",
   "description": "Watch YouTube videos with friends!",
-  "main": "src/front/index.jsx",
+  "main": "watchwithmefront/index.jsx",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pr0gramista/watchwithme.git"

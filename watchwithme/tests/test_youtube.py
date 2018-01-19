@@ -1,5 +1,5 @@
-from src import config
-from src import youtube
+from watchwithme import config
+from watchwithme import youtube
 
 yt = youtube.YouTube(config.API)
 

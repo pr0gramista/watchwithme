@@ -1,5 +1,5 @@
-from src import app
-from src.models import room
+from watchwithme import app
+from watchwithme.models import room
 
 r = room.Room('this2is6unique')
 

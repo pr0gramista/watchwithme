@@ -5,11 +5,11 @@ python:
   - "3.6"
   - "nightly"
 env:
-  - FLASK_APP=src/app.py FLASK_DEBUG=1
+  - FLASK_APP=watchwithme/app.py FLASK_DEBUG=1
 install:
   - pip install -r requirements.txt
   - nvm install 8
   - npm install
   - npm run build
-  - mv src/config-example.py src/config.py
-script: pytest src
+  - mv watchwithme/config-example.py watchwithme/config.py
+script: pytest watchwithme
