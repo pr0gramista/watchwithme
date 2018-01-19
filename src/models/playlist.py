@@ -1,7 +1,7 @@
 import time
 
-from .app import yt
-from .video import VideoState
+from src.app import yt
+from src.video import VideoState
 
 
 class Playlist:

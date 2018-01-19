@@ -1,7 +1,7 @@
 import random
 import string
 
-from .playlist import Playlist
+from src.models.playlist import Playlist
 from .live import Live
 
 

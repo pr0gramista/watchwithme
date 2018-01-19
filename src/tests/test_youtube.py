@@ -1,5 +1,5 @@
-from . import youtube
-from . import config
+from src import config
+from src import youtube
 
 yt = youtube.YouTube(config.API)
 
