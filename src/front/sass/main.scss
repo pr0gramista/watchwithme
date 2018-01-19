@@ -64,6 +64,11 @@ $small: 600px;
   overflow-y: auto;
   min-height: 300px;
 
+  #live-form {
+    overflow: hidden;
+    background: #303F9F;
+  }
+
   ul.playlist {
     padding: 0;
     margin: 0;

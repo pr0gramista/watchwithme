@@ -6,6 +6,8 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import Dialog from 'material-ui/Dialog';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
+import FontIcon from 'material-ui/FontIcon';
 import FlatButton from 'material-ui/FlatButton';
 import {setCurrentPlaylist} from '../store/actions.jsx';
 import socket from '../Socket.jsx';
@@ -56,7 +58,8 @@ class Playlists extends React.Component {
         this.state = {
             currentPlaylist: null,
             dialogOpened: false,
-            addPlaylistString: ""
+            addPlaylistString: "",
+            liveVideoString: ""
         };
 
         this.handleDialogClose = this.handleDialogClose.bind(this);
@@ -64,6 +67,8 @@ class Playlists extends React.Component {
         this.handlePlaylistChange = this.handlePlaylistChange.bind(this);
         this.onPlaylistStringChange = this.onPlaylistStringChange.bind(this);
         this.handleAddPlaylistDialogFAB = this.handleAddPlaylistDialogFAB.bind(this);
+        this.handleLiveStringChanged = this.handleLiveStringChanged.bind(this);
+        this.handleSetLiveVideo = this.handleSetLiveVideo.bind(this);
     }
 
     handlePlaylistChange(event, index, value) {
@@ -73,6 +78,14 @@ class Playlists extends React.Component {
             socket.change_playlist(value.id);
         }
         this.props.setCurrentPlaylist(value);
+    }
+
+    handleLiveStringChanged(event, newString) {
+        this.setState({liveVideoString: newString});
+    }
+
+    handleSetLiveVideo() {
+        console.log("Set live " + this.state.liveVideoString);
     }
 
     handleAddPlaylist() {
@@ -98,6 +111,7 @@ class Playlists extends React.Component {
                                                                                      primaryText={playlist.title}/>);
         playlistsItems.unshift(<MenuItem key={"live"} value={LIVE} primaryText={"🔴 Live"}/>);
 
+        // Actions for add playlist dialog
         const actions = [
             <FlatButton
                 label="Close"
@@ -110,12 +124,30 @@ class Playlists extends React.Component {
             />,
         ];
 
+        // Determine display (playlist or live)
         let display = null;
         if (this.props.currentPlaylist !== null)
             if (this.props.currentPlaylist !== LIVE)
                 display = <PlaylistDisplay playlist={this.props.currentPlaylist}/>;
             else
                 display = <LivePlaylistDisplay history={this.props.liveHistory}/>;
+
+        // Show text field if now on live
+        let liveInput = null;
+        if (this.props.currentPlaylist === LIVE) {
+            liveInput =
+                <form onSubmit={this.handleSetLiveVideo} className="live-form fl">
+                    <TextField
+                        onChange={this.handleLiveStringChanged}
+                        value={this.state.liveVideoString}
+                        fullWidth={true}
+                        hintText="Video id or url"
+                        className="fl-grow"
+                    />
+                    <IconButton onClick={this.handleSetLiveVideo}><FontIcon
+                        className="material-icons">send</FontIcon></IconButton>
+                </form>;
+        }
 
         return (
             <div id="playlist">
@@ -128,6 +160,7 @@ class Playlists extends React.Component {
                 >
                     {playlistsItems}
                 </SelectField>
+                {liveInput}
                 <FloatingActionButton onClick={this.handleAddPlaylistDialogFAB}
                                       style={{position: "absolute", bottom: 20, right: 20}}>
                     <ContentAdd/>
