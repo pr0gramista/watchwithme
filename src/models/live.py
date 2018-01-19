@@ -1,7 +1,7 @@
 import time
 
 from src.app import yt
-from src.video import VideoState
+from src.video_state import VideoState
 
 
 class Live:

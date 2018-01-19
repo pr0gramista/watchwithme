@@ -13,7 +13,7 @@ app = Flask(__name__)
 socket_io = SocketIO(app)
 
 from src.models.room import Room
-from .video import VideoState
+from .video_state import VideoState
 
 if __name__ == '__main__':
     socket_io.run(app)
