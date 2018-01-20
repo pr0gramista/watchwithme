@@ -1,4 +1,4 @@
-from watchwithme import app
+from watchwithme import youtube
 from watchwithme.models import room
 
 r = room.Room('this2is6unique')
@@ -26,8 +26,8 @@ def test_is_playlist_added():
                 'thumbnail': 'https://i.ytimg.com/vi/Be0OAjuk_1k/hqdefault.jpg'
             }]
 
-    app.yt.get_playlist_items = mock_get_playlist_items
-    app.yt.get_playlist_info = mock_get_playlist_info
+    youtube.get_playlist_items = mock_get_playlist_items
+    youtube.get_playlist_info = mock_get_playlist_info
     r.import_yt_playlist('PL3hSzXlZKYpM8XhxS0v7v4SB2aWLeCcUj')
     assert len(r.playlists) == 1
 
