@@ -17,9 +17,13 @@ export default class socket {
             store.dispatch(addPlaylist(playlist));
         });
         socket.io.on('playlist_changed', function (playlistId) {
-            let playlist = store.getState().playlists.find(function (playlist) {
-                return playlist.id === playlistId;
-            });
+            let playlist;
+            if (playlistId === "live")
+                playlist = "live";
+            else
+                playlist = store.getState().playlists.find(function (playlist) {
+                    return playlist.id === playlistId;
+                });
 
             if (playlist !== undefined)
                 store.dispatch(setCurrentPlaylist(playlist));
