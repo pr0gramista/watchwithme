@@ -26,18 +26,9 @@ def get_room_with_id(id):
         return None
 
 
-@socket_io.on('change_playlist')
-def handle_add_playlist(room_id, playlist_id):
-    room = get_room_with_id(room_id)
-    if room is None:
-        return abort(404)
-
-    if len([playlist for playlist in room.playlists if playlist.id == playlist_id]):
-        socket_io.emit('playlist_changed', playlist_id, room=room_id)
-
-
 @socket_io.on('add_playlist')
 def handle_add_playlist(room_id, playlist_url):
+    """Handles adding playlist to the room"""
     print(playlist_url)
     room = get_room_with_id(room_id)
     if room is None:
@@ -50,6 +41,7 @@ def handle_add_playlist(room_id, playlist_url):
 
 @socket_io.on('remove_playlist')
 def handle_add_playlist(room_id, playlist_id):
+    """Handles removing playlist from the room"""
     room = get_room_with_id(room_id)
     if room is None:
         return abort(404)
@@ -59,7 +51,8 @@ def handle_add_playlist(room_id, playlist_id):
 
 
 @socket_io.on('live_change_video')
-def handle_live_change(room_id, video_url):
+def handle_live_video_change(room_id, video_url):
+    """Handles changing current live video"""
     room = get_room_with_id(room_id)
     if room is None:
         return abort(404)
@@ -70,6 +63,7 @@ def handle_live_change(room_id, video_url):
 
 @socket_io.on('send_message')
 def handle_send_message(room_id, message):
+    """Handles sending chat message"""
     room = get_room_with_id(room_id)
     if room is None:
         return abort(404)
@@ -79,6 +73,7 @@ def handle_send_message(room_id, message):
 
 @socket_io.on('join')
 def handle_join(room_id):
+    """Handles joining a room"""
     room = get_room_with_id(room_id)
     if room is None:
         return abort(404)
@@ -88,6 +83,7 @@ def handle_join(room_id):
 
 @socket_io.on('pause')
 def handle_pause(room_id, t):
+    """Handles pausing player"""
     print('Pause: {}'.format(t))
     room = get_room_with_id(room_id)
     if room is None:
@@ -99,6 +95,7 @@ def handle_pause(room_id, t):
 
 @socket_io.on('play')
 def handle_play_at(room_id, t):
+    """Handles playing/resuming player"""
     print('Play: {}'.format(t))
     room = get_room_with_id(room_id)
     if room is None:

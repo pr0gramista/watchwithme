@@ -5,6 +5,7 @@ from watchwithme.video_state import VideoState
 
 
 class Playlist:
+    """Playlist is a list of videos with variables needed for synchronous playback"""
     def __init__(self, playlist_id):
         self.id = playlist_id
         self.__dict__.update(yt.get_playlist_info(playlist_id))
