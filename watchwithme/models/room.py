@@ -29,28 +29,28 @@ class Room:
     @property
     def video(self):
         if self.current_playlist is not None:
-            pass  # TODO: Get current video form playlist
+            return self.current_playlist.current_video
         else:
             return self.live.video
         
     @property
     def is_video_playing(self):
         if self.current_playlist is not None:
-            pass  # TODO: Get current video state form playlist
+            return self.current_playlist.is_video_playing
         else:
             return self.live.is_video_playing
 
     @property
     def video_time(self):
         if self.current_playlist is not None:
-            pass  # TODO: Get current video time form playlist
+            return self.current_playlist.video_time
         else:
             return self.live.video_time
 
     @property
     def video_timestamp(self):
         if self.current_playlist is not None:
-            pass  # TODO: Get current video timestamp form playlist
+            return self.current_playlist.video_timestamp
         else:
             return self.live.video_timestamp
 

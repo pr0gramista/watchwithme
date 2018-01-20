@@ -13,3 +13,8 @@ class Playlist:
         self.video_time = 0
         self.video_timestamp = time.time()
         self.is_video_playing = False
+        self.current_index = 0
+
+    @property
+    def current_video(self):
+        return self.videos[self.current_index]
