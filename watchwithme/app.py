@@ -5,15 +5,12 @@ import time
 from flask import Flask, url_for, render_template, make_response, redirect, abort
 from flask_socketio import SocketIO, join_room
 
-from . import config
-from . import youtube
+from watchwithme.models.room import Room
+from . import youtube as yt
+from .video_state import VideoState
 
-yt = youtube.YouTube(config.API)
 app = Flask(__name__)
 socket_io = SocketIO(app)
-
-from watchwithme.models.room import Room
-from .video_state import VideoState
 
 if __name__ == '__main__':
     socket_io.run(app)

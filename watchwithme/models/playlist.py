@@ -1,6 +1,6 @@
 import time
 
-from watchwithme.app import yt
+import watchwithme.youtube as yt
 from watchwithme.video_state import VideoState
 
 

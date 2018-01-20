@@ -1,6 +1,6 @@
 import time
 
-from watchwithme.app import yt
+import watchwithme.youtube as yt
 from watchwithme.video_state import VideoState
 
 
@@ -14,7 +14,8 @@ class Live:
         self.video_state = VideoState.PAUSED
 
     def add_video_to_history(self, video_id):
-        self.history.append(yt.get_video(video_id))
+        # TODO: implement real get_video
+        self.history.append(yt.get_raw_video(video_id))
 
     def remove_video_from_history(self, video_id):
         """"Removes video from the queue, returns None if video wasn't found"""
