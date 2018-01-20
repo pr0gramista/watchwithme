@@ -1,7 +1,6 @@
 import time
 
 import watchwithme.youtube as yt
-from watchwithme.video_state import VideoState
 
 
 class Playlist:
@@ -13,4 +12,4 @@ class Playlist:
 
         self.video_time = 0
         self.video_timestamp = time.time()
-        self.video_state = VideoState.PAUSED
+        self.is_video_playing = False

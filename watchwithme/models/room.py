@@ -34,11 +34,11 @@ class Room:
             return self.live.video
         
     @property
-    def video_state(self):
+    def is_video_playing(self):
         if self.current_playlist is not None:
             pass  # TODO: Get current video state form playlist
         else:
-            return self.live.video_state
+            return self.live.is_video_playing
 
     @property
     def video_time(self):

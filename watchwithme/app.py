@@ -7,7 +7,6 @@ from flask_socketio import SocketIO, join_room
 
 from watchwithme.models.room import Room
 from . import youtube as yt
-from .video_state import VideoState
 
 app = Flask(__name__)
 socket_io = SocketIO(app)
@@ -131,8 +130,8 @@ def index():
 def single_room(room_id):
     room = get_room_with_id(room_id)
     if room is not None:
-        play = room.video_state.value
-        if room.video_state == VideoState.PLAYING:
+        play = 1 if room.is_video_playing else 0
+        if room.is_video_playing:
             t = room.video_time + time.time() - room.video_timestamp
         else:
             t = room.video_time

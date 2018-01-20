@@ -1,7 +1,6 @@
 import time
 
 import watchwithme.youtube as yt
-from watchwithme.video_state import VideoState
 
 LIMIT_HISTORY = 20
 
@@ -16,7 +15,7 @@ class Live:
         self.video = 'feA64wXhbjo'
         self.video_time = 0
         self.video_timestamp = time.time()
-        self.video_state = VideoState.PAUSED
+        self.is_video_playing = False
 
     def add_video_to_history(self, video_id):
         """Adds video to a history. If history is too long it will be shrank"""
@@ -43,17 +42,17 @@ class Live:
         self.video = video_id
         self.video_time = 0
         self.video_timestamp = time.time()
-        self.video_state = VideoState.PLAYING
+        self.is_video_playing = True
 
     def play(self, t):
         self.video_time = t
         self.video_timestamp = time.time()
-        self.video_state = VideoState.PLAYING
+        self.is_video_playing = True
 
     def pause(self, t):
         self.video_time = t
         self.video_timestamp = time.time()
-        self.video_state = VideoState.PAUSED
+        self.is_video_playing = False
 
     def get_current_video_info(self):
         return
