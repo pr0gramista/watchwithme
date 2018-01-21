@@ -11,19 +11,27 @@ export default class Player extends React.Component {
 
         this.onPlayerReady = this.onPlayerReady.bind(this);
         this.onPlayerStateChange = this.onPlayerStateChange.bind(this);
+        this.onLiveVideoChanged = this.onLiveVideoChanged.bind(this);
         this.onPlay = this.onPlay.bind(this);
         this.onPause = this.onPause.bind(this);
         this.suppress = this.suppress.bind(this);
 
         socket.io.on('play', this.onPlay);
         socket.io.on('pause', this.onPause);
+        socket.io.on('live_video_changed', this.onLiveVideoChanged);
     }
 
     suppress() {
         this.ignore = true;
-        setTimeout(function () {
+        let f = function () {
             this.ignore = false
-        }, 300)
+        }.bind(this);
+        setTimeout(f, 300)
+    }
+
+    onLiveVideoChanged(videoId) {
+        this.player.loadVideoById(videoId);
+        this.suppress();
     }
 
     onPlay(time) {
@@ -45,12 +53,9 @@ export default class Player extends React.Component {
     }
 
     onPlayerReady(event) {
-        console.log("onPlayerReady! ");
-        console.log(event);
     }
 
     onPlayerStateChange(event) {
-        console.log("onPlayerStateChange");
         if (this.stopFirst && event.data === 1) {
             event.target.pauseVideo();
             this.stopFirst = false;
@@ -83,7 +88,6 @@ export default class Player extends React.Component {
         };
         youtube_api_ready = youtube_api_ready.bind(this);
         window.onYouTubeIframeAPIReady = youtube_api_ready;
-
     }
 
     render() {

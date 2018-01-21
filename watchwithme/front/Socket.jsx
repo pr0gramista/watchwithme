@@ -1,4 +1,4 @@
-import {addPlaylist, receiveMessage, setCurrentPlaylist} from "./store/actions.jsx";
+import {addPlaylist, addToHistory, receiveMessage, setCurrentPlaylist, setCurrentVideo} from "./store/actions.jsx";
 
 let sock;
 let room_id;
@@ -29,7 +29,11 @@ export default class socket {
                 store.dispatch(setCurrentPlaylist(playlist));
             else
                 console.error("Playlist changed, but it doesn't exist locally.")
-        })
+        });
+        socket.io.on('live_video_changed', function (video_id) {
+            store.dispatch(addToHistory(store.getState().currentVideo));
+            store.dispatch(setCurrentVideo(video_id));
+        });
     }
 
     static join() {
@@ -53,7 +57,11 @@ export default class socket {
     }
 
     static change_playlist(playlistId) {
-        sock.emit('change_playlist', room_id, playlistId)
+        sock.emit('change_playlist', room_id, playlistId);
+    }
+
+    static setLiveVideo(video_url) {
+        sock.emit('live_change_video', room_id, video_url);
     }
 
     static get io() {

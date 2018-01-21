@@ -68,6 +68,7 @@ def handle_live_video_change(room_id, video_url):
 
     video_id = yt.get_video_id_from_url(video_url)
     room.live.set_video(video_id)
+    socket_io.emit('live_video_changed', video_id, room=room_id)
 
 
 @socket_io.on('send_message')

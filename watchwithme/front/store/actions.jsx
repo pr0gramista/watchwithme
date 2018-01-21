@@ -3,6 +3,7 @@ const SET_CURRENT_PLAYLIST = 'SET_CURRENT_PLAYLIST';
 const ADD_PLAYLIST = 'ADD_PLAYLIST';
 const ADD_TO_HISTORY = 'ADD_TO_HISTORY';
 const SET_NICKNAME = 'SET_NICKNAME';
+const SET_CURRENT_VIDEO = 'SET_CURRENT_VIDEO';
 
 export const receiveMessage = text => {
     return {
@@ -36,5 +37,12 @@ export const setNickname = nickname => {
     return {
         type: SET_NICKNAME,
         nickname
+    }
+};
+
+export const setCurrentVideo = videoId => {
+    return {
+        type: SET_CURRENT_VIDEO,
+        videoId
     }
 };

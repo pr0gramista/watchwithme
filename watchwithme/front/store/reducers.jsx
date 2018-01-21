@@ -7,7 +7,8 @@ const initialState = {
         'id': "y6120QOlsfU",
         'title': "Darude - Sandstorm",
         'thumbnail': "https://i.ytimg.com/vi/y6120QOlsfU/hqdefault.jpg"
-    }]
+    }],
+    currentVideo: ''
 };
 
 function wwmApp(state = initialState, action) {
@@ -31,6 +32,10 @@ function wwmApp(state = initialState, action) {
         case 'SET_NICKNAME':
             return Object.assign({}, state, {
                 nickname: action.nickname
+            });
+        case 'SET_CURRENT_VIDEO':
+            return Object.assign({}, state, {
+                currentVideo: action.videoId
             });
         default:
             return state

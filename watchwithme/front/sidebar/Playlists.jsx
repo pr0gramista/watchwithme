@@ -85,7 +85,8 @@ class Playlists extends React.Component {
     }
 
     handleSetLiveVideo() {
-        console.log("Set live " + this.state.liveVideoString);
+        socket.setLiveVideo(this.state.liveVideoString);
+        this.setState({liveVideoString: ""});
     }
 
     handleAddPlaylist() {
