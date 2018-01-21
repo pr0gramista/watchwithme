@@ -3,6 +3,7 @@ import re
 from urllib.parse import urlencode
 from urllib.request import urlopen
 
+from watchwithme.models.video import Video
 from . import config
 
 KEY = config.API
@@ -34,7 +35,6 @@ def get_video_id_from_url(url):
 
 def get_playlist_items(playlist_id):
     """Get all playlist videos in processed format.
-    Videos are dictionaries with keys: id, title, thumbnail
     :param playlist_id: id of playlist
     :return: list of videos in specified format
     """
@@ -45,11 +45,16 @@ def get_playlist_items(playlist_id):
         playlist_items = get_raw_playlist_items(playlist_id, page_token=playlist_items[
             'nextPageToken'])
         items += playlist_items['items']
-    return [{
-        'id': item['snippet']['resourceId']['videoId'],
-        'title': item['snippet']['title'],
-        'thumbnail': item['snippet']['thumbnails']['high']['url']
-    } for item in items if item['snippet']['title'] != 'Deleted video']
+    return [Video.from_api_item(item) for item in items if item['snippet']['title'] != 'Deleted video']
+
+
+def get_video(video_id):
+    """Get video in processed format.
+    :param video_id: id of playlist
+    :return: video object or None if error fatal error occurred
+    """
+    raw_video = get_raw_video(video_id)
+    return Video.from_api_item(raw_video['items'][0])
 
 
 def get_playlist_info(playlist_id):

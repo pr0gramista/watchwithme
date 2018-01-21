@@ -29,8 +29,8 @@ export default class Player extends React.Component {
         setTimeout(f, 300)
     }
 
-    onLiveVideoChanged(videoId) {
-        this.player.loadVideoById(videoId);
+    onLiveVideoChanged(video) {
+        this.player.loadVideoById(video.id);
         this.suppress();
     }
 

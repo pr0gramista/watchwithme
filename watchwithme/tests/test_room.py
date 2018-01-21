@@ -1,5 +1,6 @@
 from watchwithme import youtube
 from watchwithme.models import room
+from watchwithme.models.video import Video
 
 r = room.Room('this2is6unique')
 
@@ -15,16 +16,16 @@ def test_is_playlist_added():
 
     def mock_get_playlist_items(playlist_id, page_token=""):
         return [
-            {
+            Video.from_dict({
                 'id': 'y6120QOlsfU',
                 'title': 'Darude - Sandstorm',
                 'thumbnail': 'https://i.ytimg.com/vi/y6120QOlsfU/hqdefault.jpg'
-            },
-            {
+            }),
+            Video.from_dict({
                 'id': 'Be0OAjuk_1k',
                 'title': 'Scatman John - Scatman (Extended Mix) 1995',
                 'thumbnail': 'https://i.ytimg.com/vi/Be0OAjuk_1k/hqdefault.jpg'
-            }]
+            })]
 
     youtube.get_playlist_items = mock_get_playlist_items
     youtube.get_playlist_info = mock_get_playlist_info

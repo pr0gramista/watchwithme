@@ -30,9 +30,9 @@ export default class socket {
             else
                 console.error("Playlist changed, but it doesn't exist locally.")
         });
-        socket.io.on('live_video_changed', function (video_id) {
+        socket.io.on('live_video_changed', function (video) {
             store.dispatch(addToHistory(store.getState().currentVideo));
-            store.dispatch(setCurrentVideo(video_id));
+            store.dispatch(setCurrentVideo(video));
         });
     }
 

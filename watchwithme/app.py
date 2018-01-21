@@ -45,7 +45,7 @@ def handle_add_playlist(room_id, playlist_url):
 
     playlist_id = yt.get_playlist_id_from_url(playlist_url)
     new_playlist = room.import_yt_playlist(playlist_id)
-    socket_io.emit('playlist_added', new_playlist.__dict__, room=room_id)
+    socket_io.emit('playlist_added', new_playlist.for_socketio(), room=room_id)
 
 
 @socket_io.on('remove_playlist')
@@ -67,8 +67,9 @@ def handle_live_video_change(room_id, video_url):
         return abort(404)
 
     video_id = yt.get_video_id_from_url(video_url)
-    room.live.set_video(video_id)
-    socket_io.emit('live_video_changed', video_id, room=room_id)
+    video = yt.get_video(video_id)
+    room.live.set_video(video)
+    socket_io.emit('live_video_changed', video.for_socketio(), room=room_id)
 
 
 @socket_io.on('send_message')

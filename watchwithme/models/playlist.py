@@ -18,3 +18,9 @@ class Playlist:
     @property
     def current_video(self):
         return self.videos[self.current_index]
+
+    def for_socketio(self):
+        videos_for_socketio = [video.for_socketio() for video in self.videos]
+        playlist_for_socketio = self.__dict__
+        playlist_for_socketio['videos'] = videos_for_socketio
+        return playlist_for_socketio

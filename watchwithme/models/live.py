@@ -1,6 +1,6 @@
 import time
 
-import watchwithme.youtube as yt
+from watchwithme.models.video import Video
 
 LIMIT_HISTORY = 20
 
@@ -12,15 +12,15 @@ class Live:
     def __init__(self, room_id):
         self.room_id = room_id
         self.history = []
-        self.video = 'feA64wXhbjo'
+        self.video = Video.from_items('feA64wXhbjo', 'Bag Raiders - Shooting Stars',
+                                      'https://i.ytimg.com/vi/feA64wXhbjo/hqdefault.jpg')
         self.video_time = 0
         self.video_timestamp = time.time()
         self.is_video_playing = False
 
-    def add_video_to_history(self, video_id):
+    def add_video_to_history(self, video):
         """Adds video to a history. If history is too long it will be shrank"""
-        # TODO: implement real get_video
-        self.history.append(yt.get_raw_video(video_id))
+        self.history.append(video)
 
         # Shrink history
         # TODO: need testing
@@ -35,11 +35,11 @@ class Live:
             return video_id
         return None
 
-    def set_video(self, video_id):
+    def set_video(self, video):
         """Sets video for live feed, it will add existing video to history"""
         self.add_video_to_history(self.video)
 
-        self.video = video_id
+        self.video = video
         self.video_time = 0
         self.video_timestamp = time.time()
         self.is_video_playing = True
