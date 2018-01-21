@@ -3,12 +3,8 @@ const initialState = {
     messages: [],
     currentPlaylist: "live",
     playlists: [],
-    liveHistory: [{
-        'id': "y6120QOlsfU",
-        'title': "Darude - Sandstorm",
-        'thumbnail': "https://i.ytimg.com/vi/y6120QOlsfU/hqdefault.jpg"
-    }],
-    currentVideo: ''
+    liveHistory: [],
+    currentVideo: null
 };
 
 function wwmApp(state = initialState, action) {
