@@ -48,15 +48,15 @@ export default class socket {
         sock.emit('play', room_id, time);
     }
 
-    static send_chat_message(message) {
+    static sendChatMessage(message) {
         sock.emit('send_message', room_id, store.getState().nickname + ": " + message);
     }
 
-    static add_playlist(url) {
+    static addPlaylist(url) {
         sock.emit('add_playlist', room_id, url);
     }
 
-    static change_playlist(playlistId) {
+    static changePlaylist(playlistId) {
         sock.emit('change_playlist', room_id, playlistId);
     }
 

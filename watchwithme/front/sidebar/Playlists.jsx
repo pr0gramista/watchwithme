@@ -73,9 +73,9 @@ class Playlists extends React.Component {
 
     handlePlaylistChange(event, index, value) {
         if (value === LIVE) {
-            socket.change_playlist(LIVE);
+            socket.changePlaylist(LIVE);
         } else {
-            socket.change_playlist(value.id);
+            socket.changePlaylist(value.id);
         }
         this.props.setCurrentPlaylist(value);
     }
@@ -90,7 +90,7 @@ class Playlists extends React.Component {
     }
 
     handleAddPlaylist() {
-        socket.add_playlist(this.state.addPlaylistString);
+        socket.addPlaylist(this.state.addPlaylistString);
         this.setState({dialogOpened: false, addPlaylistString: ""});
     }
 
