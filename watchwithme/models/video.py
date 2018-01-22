@@ -1,9 +1,18 @@
 class Video:
     @classmethod
-    def from_api_item(cls, api_item):
+    def from_video_api_item(cls, api_item):
         video = cls()
 
         video.id = api_item['id']
+        video.title = api_item['snippet']['title']
+        video.thumbnail = api_item['snippet']['thumbnails']['high']['url']
+        return video
+
+    @classmethod
+    def from_playlist_api_item(cls, api_item):
+        video = cls()
+
+        video.id = api_item['snippet']['resourceId']['videoId']
         video.title = api_item['snippet']['title']
         video.thumbnail = api_item['snippet']['thumbnails']['high']['url']
         return video

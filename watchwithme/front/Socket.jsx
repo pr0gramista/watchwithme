@@ -32,7 +32,7 @@ export default class socket {
         });
         socket.io.on('live_video_changed', function (video) {
             let currentVideo = store.getState().currentVideo;
-            if (currentVideo !== null) {
+            if (currentVideo !== null && currentVideo.id !== video.id) {
                 store.dispatch(addToHistory(store.getState().currentVideo));
             }
             store.dispatch(setCurrentVideo(video));

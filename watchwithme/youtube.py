@@ -45,7 +45,7 @@ def get_playlist_items(playlist_id):
         playlist_items = get_raw_playlist_items(playlist_id, page_token=playlist_items[
             'nextPageToken'])
         items += playlist_items['items']
-    return [Video.from_api_item(item) for item in items if item['snippet']['title'] != 'Deleted video']
+    return [Video.from_playlist_api_item(item) for item in items if item['snippet']['title'] != 'Deleted video']
 
 
 def get_video(video_id):
@@ -54,7 +54,7 @@ def get_video(video_id):
     :return: video object or None if error fatal error occurred
     """
     raw_video = get_raw_video(video_id)
-    return Video.from_api_item(raw_video['items'][0])
+    return Video.from_video_api_item(raw_video['items'][0])
 
 
 def get_playlist_info(playlist_id):

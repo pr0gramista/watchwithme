@@ -31,8 +31,14 @@ def handle_change_playlist(room_id, playlist_id):
     if room is None:
         return abort(404)
 
-    if len([playlist for playlist in room.playlists if playlist.id == playlist_id]) or playlist_id == "live":
+    matched_playlists = [playlist for playlist in room.playlists if playlist.id == playlist_id]
+    if len(matched_playlists) >= 1:
         socket_io.emit('playlist_changed', playlist_id, room=room_id)
+        print(matched_playlists[0].current_video)
+        socket_io.emit('playlist_video_changed', matched_playlists[0].current_video, room=room_id)
+    elif playlist_id == "live":
+        socket_io.emit('playlist_changed', playlist_id, room=room_id)
+        socket_io.emit('live_video_changed', room.live.video.for_socketio(), room=room_id)
 
 
 @socket_io.on('add_playlist')

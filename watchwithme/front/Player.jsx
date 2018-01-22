@@ -12,6 +12,7 @@ export default class Player extends React.Component {
         this.onPlayerReady = this.onPlayerReady.bind(this);
         this.onPlayerStateChange = this.onPlayerStateChange.bind(this);
         this.onLiveVideoChanged = this.onLiveVideoChanged.bind(this);
+        this.onPlaylistVideoChanged = this.onPlaylistVideoChanged.bind(this);
         this.onPlay = this.onPlay.bind(this);
         this.onPause = this.onPause.bind(this);
         this.suppress = this.suppress.bind(this);
@@ -19,6 +20,7 @@ export default class Player extends React.Component {
         socket.io.on('play', this.onPlay);
         socket.io.on('pause', this.onPause);
         socket.io.on('live_video_changed', this.onLiveVideoChanged);
+        socket.io.on('playlist_video_changed', this.onPlaylistVideoChanged);
     }
 
     suppress() {
@@ -30,6 +32,11 @@ export default class Player extends React.Component {
     }
 
     onLiveVideoChanged(video) {
+        this.player.loadVideoById(video.id);
+        this.suppress();
+    }
+
+    onPlaylistVideoChanged(video) {
         this.player.loadVideoById(video.id);
         this.suppress();
     }
