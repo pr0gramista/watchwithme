@@ -16,13 +16,13 @@ class Room:
 
     def play(self, t):
         if self.current_playlist is not None:
-            self.current_playlist.play()
+            self.current_playlist.play(t)
         else:
             self.live.play(t)
 
     def pause(self, t):
         if self.current_playlist is not None:
-            self.current_playlist.pause()
+            self.current_playlist.pause(t)
         else:
             self.live.pause(t)
 

@@ -19,6 +19,23 @@ class Playlist:
     def current_video(self):
         return self.videos[self.current_index]
 
+    def next_video(self):
+        self.current_index += 1
+        if self.current_index >= len(self.videos):
+            # TODO: implement shuffling and looping
+            return None
+        return self.current_video
+
+    def play(self, t):
+        self.video_time = t
+        self.video_timestamp = time.time()
+        self.is_video_playing = True
+
+    def pause(self, t):
+        self.video_time = t
+        self.video_timestamp = time.time()
+        self.is_video_playing = False
+
     def for_socketio(self):
         videos_for_socketio = [video.for_socketio() for video in self.videos]
         playlist_for_socketio = self.__dict__

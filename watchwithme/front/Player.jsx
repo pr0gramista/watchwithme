@@ -5,6 +5,9 @@ export default class Player extends React.Component {
     constructor(props) {
         super(props);
         this.player = null;
+        this.state = {
+            video: ''
+        };
 
         this.stopFirst = false;
         this.ignore = false;
@@ -32,11 +35,17 @@ export default class Player extends React.Component {
     }
 
     onLiveVideoChanged(video) {
+        this.setState({
+            video: video
+        });
         this.player.loadVideoById(video.id);
         this.suppress();
     }
 
     onPlaylistVideoChanged(video) {
+        this.setState({
+            video: video
+        });
         this.player.loadVideoById(video.id);
         this.suppress();
     }
@@ -63,6 +72,11 @@ export default class Player extends React.Component {
     }
 
     onPlayerStateChange(event) {
+        if (event.data === 0) { // Ended
+            socket.getNextVideoIfPossible(this.state.video.id);
+            return;
+        }
+
         if (this.stopFirst && event.data === 1) {
             event.target.pauseVideo();
             this.stopFirst = false;

@@ -25,6 +25,17 @@ def get_room_with_id(id):
         return None
 
 
+@socket_io.on('playlist_next_video')
+def handle_get_next_video_on_playlist(room_id, current_video_id):
+    room = get_room_with_id(room_id)
+    if room is None:
+        return abort(404)
+
+    playlist = room.current_playlist
+    next_video = playlist.next_video()
+    socket_io.emit('playlist_video_changed', next_video, room=room_id)
+
+
 @socket_io.on('change_playlist')
 def handle_change_playlist(room_id, playlist_id):
     room = get_room_with_id(room_id)
@@ -33,10 +44,11 @@ def handle_change_playlist(room_id, playlist_id):
 
     matched_playlists = [playlist for playlist in room.playlists if playlist.id == playlist_id]
     if len(matched_playlists) >= 1:
+        room.current_playlist = matched_playlists[0]
         socket_io.emit('playlist_changed', playlist_id, room=room_id)
-        print(matched_playlists[0].current_video)
         socket_io.emit('playlist_video_changed', matched_playlists[0].current_video, room=room_id)
     elif playlist_id == "live":
+        room.current_playlist = None
         socket_io.emit('playlist_changed', playlist_id, room=room_id)
         socket_io.emit('live_video_changed', room.live.video.for_socketio(), room=room_id)
 
@@ -44,7 +56,6 @@ def handle_change_playlist(room_id, playlist_id):
 @socket_io.on('add_playlist')
 def handle_add_playlist(room_id, playlist_url):
     """Handles adding playlist to the room"""
-    print(playlist_url)
     room = get_room_with_id(room_id)
     if room is None:
         return abort(404)
