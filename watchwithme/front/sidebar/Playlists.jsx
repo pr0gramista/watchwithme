@@ -163,7 +163,7 @@ class Playlists extends React.Component {
                 </SelectField>
                 {liveInput}
                 <FloatingActionButton onClick={this.handleAddPlaylistDialogFAB}
-                                      style={{position: "absolute", bottom: 20, right: 20}}>
+                                      style={{position: "absolute", bottom: 20, right: 20, zIndex: 100}}>
                     <ContentAdd/>
                 </FloatingActionButton>
                 {display}
