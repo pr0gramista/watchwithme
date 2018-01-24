@@ -18,7 +18,7 @@ const LIVE = "live";
 class PlaylistDisplay extends React.Component {
     render() {
         const videoItems = this.props.playlist.videos.map((video, index) =>
-            <li key={video.id} className="video">
+            <li key={video.id} className="video" onClick={this.props.changeVideo}>
                 <img src={video.thumbnail}/>
                 <h1>{video.title}</h1>
             </li>);
@@ -35,7 +35,7 @@ class PlaylistDisplay extends React.Component {
 class LivePlaylistDisplay extends React.Component {
     render() {
         const historyItems = this.props.history.map((video, index) =>
-            <li key={video.id} className="video">
+            <li key={video.id} video={video.id} className="video" onClick={this.props.changeVideo}>
                 <img src={video.thumbnail}/>
                 <h1>{video.title}</h1>
             </li>);
@@ -129,9 +129,13 @@ class Playlists extends React.Component {
         let display = null;
         if (this.props.currentPlaylist !== null)
             if (this.props.currentPlaylist !== LIVE)
-                display = <PlaylistDisplay playlist={this.props.currentPlaylist}/>;
+                display = <PlaylistDisplay playlist={this.props.currentPlaylist} changeVideo={(event) => {
+                    // TODO: implement video selection for playlists
+                }}/>;
             else
-                display = <LivePlaylistDisplay history={this.props.liveHistory}/>;
+                display = <LivePlaylistDisplay history={this.props.liveHistory} changeVideo={(event) => {
+                    socket.setLiveVideo(event.currentTarget.getAttribute('video'));
+                }}/>;
 
         // Show text field if now on live
         let liveInput = null;

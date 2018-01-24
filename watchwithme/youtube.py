@@ -1,5 +1,6 @@
 import json
 import re
+from string import punctuation
 from urllib.parse import urlencode
 from urllib.request import urlopen
 
@@ -12,6 +13,9 @@ VIDEO_PATTERNS = [
     re.compile(r'(?:.*)v=([^?&]*)'),
     re.compile(r'(?:.*)youtu.be/([^?&]*)'),
 ]
+VIDEO_URL_FILTER = punctuation
+VIDEO_URL_FILTER = VIDEO_URL_FILTER.replace('-', '')
+VIDEO_URL_FILTER = VIDEO_URL_FILTER.replace('_', '')
 PLAYLIST_PATTERNS = [
     re.compile(r'(?:.*)list=([^?&]*)')
 ]
@@ -26,6 +30,10 @@ def get_playlist_id_from_url(url):
 
 
 def get_video_id_from_url(url):
+    # Check if url is actually a id
+    if len(url) == 11 and not any(c in VIDEO_URL_FILTER for c in url):
+        return url
+
     for video_pattern in VIDEO_PATTERNS:
         match = video_pattern.match(url)
         if match:
