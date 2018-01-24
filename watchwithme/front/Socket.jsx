@@ -67,6 +67,10 @@ export default class socket {
         sock.emit('live_change_video', room_id, videoUrl);
     }
 
+    static changePlaylistVideo(videoId) {
+        sock.emit('playlist_change_video', room_id, videoId);
+    }
+
     static getNextVideoIfPossible(videoId) {
         if (store.getState().currentPlaylist !== "live") {
             sock.emit('playlist_next_video', room_id, videoId);

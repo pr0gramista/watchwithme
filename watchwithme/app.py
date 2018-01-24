@@ -25,6 +25,17 @@ def get_room_with_id(id):
         return None
 
 
+@socket_io.on('playlist_change_video')
+def handle_change_video_on_playlist(room_id, video_id):
+    room = get_room_with_id(room_id)
+    if room is None:
+        return abort(404)
+
+    playlist = room.current_playlist
+    if playlist.set_current_video(video_id):
+        socket_io.emit('playlist_video_changed', playlist.current_video, room=room_id)
+
+
 @socket_io.on('playlist_next_video')
 def handle_get_next_video_on_playlist(room_id, current_video_id):
     room = get_room_with_id(room_id)
@@ -33,7 +44,8 @@ def handle_get_next_video_on_playlist(room_id, current_video_id):
 
     playlist = room.current_playlist
     next_video = playlist.next_video()
-    socket_io.emit('playlist_video_changed', next_video, room=room_id)
+    if next_video is not None:
+        socket_io.emit('playlist_video_changed', next_video, room=room_id)
 
 
 @socket_io.on('change_playlist')

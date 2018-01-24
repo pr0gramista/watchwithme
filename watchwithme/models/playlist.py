@@ -26,6 +26,13 @@ class Playlist:
             return None
         return self.current_video
 
+    def set_current_video(self, video_id):
+        for index, video in enumerate(self.videos):
+            if video['id'] == video_id:
+                self.current_index = index
+                return True
+        return False
+
     def play(self, t):
         self.video_time = t
         self.video_timestamp = time.time()
