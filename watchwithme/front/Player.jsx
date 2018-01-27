@@ -99,8 +99,7 @@ export default class Player extends React.Component {
 
         let youtube_api_ready = function onYouTubeIframeAPIReady() {
             this.player = new YT.Player('player', {
-                videoId: '1aEqd4bl6Bs',
-                playerVars: {'autoplay': 0},
+                videoId: 'feA64wXhbjo',
                 events: {
                     'onReady': this.onPlayerReady,
                     'onStateChange': this.onPlayerStateChange
