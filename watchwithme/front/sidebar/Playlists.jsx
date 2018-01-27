@@ -39,13 +39,17 @@ class LivePlaylistDisplay extends React.Component {
                 <img src={video.thumbnail}/>
                 <h1>{video.title}</h1>
             </li>);
+        let display = null;
+        if (historyItems.length > 0) {
+            display = <ul className="playlist">{historyItems}</ul>;
+        } else {
+            display = <div id="empty-history">History is empty now</div>
+        }
 
         return (
             <div className="history">
                 <h3>History</h3>
-                <ul className="playlist">
-                    {historyItems}
-                </ul>
+                {display}
             </div>
         );
     }
