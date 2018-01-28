@@ -33,7 +33,7 @@ def handle_change_video_on_playlist(room_id, video_id):
 
     playlist = room.current_playlist
     if playlist.set_current_video(video_id):
-        socket_io.emit('playlist_video_changed', playlist.current_video, room=room_id)
+        socket_io.emit('playlist_video_changed', playlist.current_video.for_socketio(), room=room_id)
 
 
 @socket_io.on('playlist_next_video')
@@ -45,7 +45,7 @@ def handle_get_next_video_on_playlist(room_id, current_video_id):
     playlist = room.current_playlist
     next_video = playlist.next_video()
     if next_video is not None:
-        socket_io.emit('playlist_video_changed', next_video, room=room_id)
+        socket_io.emit('playlist_video_changed', next_video.for_socketio(), room=room_id)
 
 
 @socket_io.on('change_playlist')
@@ -58,7 +58,7 @@ def handle_change_playlist(room_id, playlist_id):
     if len(matched_playlists) >= 1:
         room.current_playlist = matched_playlists[0]
         socket_io.emit('playlist_changed', playlist_id, room=room_id)
-        socket_io.emit('playlist_video_changed', matched_playlists[0].current_video, room=room_id)
+        socket_io.emit('playlist_video_changed', matched_playlists[0].current_video.for_socketio(), room=room_id)
     elif playlist_id == "live":
         room.current_playlist = None
         socket_io.emit('playlist_changed', playlist_id, room=room_id)
@@ -119,6 +119,9 @@ def handle_join(room_id):
         return abort(404)
 
     join_room(room_id)
+    for playlist in room.playlists:
+        socket_io.emit('playlist_added', playlist.for_socketio(), room=room_id)
+    socket_io.emit('live_video_changed', room.live.video.for_socketio(), room=room_id)
 
 
 @socket_io.on('pause')

@@ -28,7 +28,7 @@ class Playlist:
 
     def set_current_video(self, video_id):
         for index, video in enumerate(self.videos):
-            if video['id'] == video_id:
+            if video.id == video_id:
                 self.current_index = index
                 return True
         return False
@@ -44,7 +44,9 @@ class Playlist:
         self.is_video_playing = False
 
     def for_socketio(self):
+        for video in self.videos:
+            print(video)
         videos_for_socketio = [video.for_socketio() for video in self.videos]
-        playlist_for_socketio = self.__dict__
+        playlist_for_socketio = self.__dict__.copy()
         playlist_for_socketio['videos'] = videos_for_socketio
         return playlist_for_socketio

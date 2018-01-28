@@ -38,8 +38,18 @@ export default class Player extends React.Component {
         this.setState({
             video: video
         });
-        this.player.loadVideoById(video.id);
-        this.suppress();
+
+        const setVideoEventually = (id) => {
+            if (this.player != null) {
+                this.player.loadVideoById(id);
+                this.suppress();
+            } else {
+                setTimeout(() => {
+                    setVideoEventually(id);
+                }, 2000);
+            }
+        };
+        setVideoEventually(video.id);
     }
 
     onPlaylistVideoChanged(video) {
