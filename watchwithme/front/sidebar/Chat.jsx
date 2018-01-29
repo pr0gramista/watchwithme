@@ -21,18 +21,18 @@ class Chat extends React.Component {
         };
     }
 
-    handleChatMessage(event) {
+    handleChatMessage = (event) => {
         event.preventDefault();
 
         if (this.state.message.length > 0) {
             socket.sendChatMessage(this.state.message);
             this.setState({message: ''});
         }
-    }
+    };
 
-    handleChatMessageChange(event) {
+    handleChatMessageChange = (event) => {
         this.setState({message: event.target.value});
-    }
+    };
 
     render() {
         const chatMessages = this.props.messages.map((message, index) => <ChatMessage key={index} message={message}/>);
@@ -43,11 +43,11 @@ class Chat extends React.Component {
                     {chatMessages}
                 </ul>
                 <div id="chat-form" className="fl">
-                    <form onSubmit={() => this.handleChatMessage} className="chat-form">
+                    <form onSubmit={this.handleChatMessage} className="chat-form">
                         <TextField hintText="Message" value={this.state.message}
-                                   onChange={() => this.handleChatMessageChange}
+                                   onChange={this.handleChatMessageChange}
                                    className="fl-grow"/>
-                        <IconButton onClick={() => this.handleChatMessage}><FontIcon
+                        <IconButton onClick={this.handleChatMessage}><FontIcon
                             className="material-icons">send</FontIcon></IconButton>
                     </form>
                 </div>

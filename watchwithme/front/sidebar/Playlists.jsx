@@ -11,95 +11,53 @@ import FontIcon from 'material-ui/FontIcon';
 import FlatButton from 'material-ui/FlatButton';
 import {setCurrentPlaylist} from '../store/actions.jsx';
 import socket from '../Socket.jsx';
+import LiveDisplay from './playlist/LiveDisplay.jsx';
+import PlaylistDisplay from './playlist/PlaylistDisplay.jsx';
 
 const LIVE = "live";
 
 
-class PlaylistDisplay extends React.Component {
-    render() {
-        const videoItems = this.props.playlist.videos.map((video, index) =>
-            <li key={video.id} video={video.id} className="video" onClick={this.props.changeVideo}>
-                <img src={video.thumbnail}/>
-                <h1>{video.title}</h1>
-            </li>);
-
-        return (
-            <ul className="playlist">
-                {videoItems}
-            </ul>
-        );
-    }
-}
-
-
-class LivePlaylistDisplay extends React.Component {
-    render() {
-        const historyItems = this.props.history.map((video, index) =>
-            <li key={video.id} video={video.id} className="video" onClick={this.props.changeVideo}>
-                <img src={video.thumbnail}/>
-                <h1>{video.title}</h1>
-            </li>);
-        let display = null;
-        if (historyItems.length > 0) {
-            display = <ul className="playlist">{historyItems}</ul>;
-        } else {
-            display = <div id="empty-history">History is empty now</div>
-        }
-
-        return (
-            <div className="history">
-                <h3>History</h3>
-                {display}
-            </div>
-        );
-    }
-}
-
-
 class Playlists extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            currentPlaylist: null,
-            dialogOpened: false,
-            addPlaylistString: "",
-            liveVideoString: ""
-        };
-    }
-
-    handlePlaylistChange(event, index, value) {
+    handlePlaylistChange = (event, index, value) => {
         if (value === LIVE) {
             socket.changePlaylist(LIVE);
         } else {
             socket.changePlaylist(value.id);
         }
         this.props.setCurrentPlaylist(value);
-    }
-
-    handleLiveStringChanged(event, newString) {
-        this.setState({liveVideoString: newString});
-    }
-
-    handleSetLiveVideo() {
-        socket.setLiveVideo(this.state.liveVideoString);
-        this.setState({liveVideoString: ""});
-    }
-
-    handleAddPlaylist() {
-        socket.addPlaylist(this.state.addPlaylistString);
-        this.setState({dialogOpened: false, addPlaylistString: ""});
-    }
-
-    handleAddPlaylistDialogFAB() {
+    };
+    /* Setting new live video */
+    handleNewLiveVideoUrlChanged = (event, newString) => {
+        this.setState({newLiveVideoUrl: newString});
+    };
+    handleSetLiveVideo = () => {
+        socket.setLiveVideo(this.state.newLiveVideoUrl);
+        this.setState({newLiveVideoUrl: ""});
+    };
+    /* Adding playlist (inside dialog) */
+    handleAddPlaylist = () => {
+        socket.addPlaylist(this.state.newPlaylistUrl);
+        this.setState({dialogOpened: false, newPlaylistUrl: ""});
+    };
+    handleNewPlaylistUrlChanged = (event, newString) => {
+        this.setState({newPlaylistUrl: newString});
+    };
+    /* Dialog */
+    handleAddPlaylistDialogFAB = () => {
         this.setState({dialogOpened: true});
-    }
-
-    handleDialogClose() {
+    };
+    handleDialogClose = () => {
         this.setState({dialogOpened: false});
-    }
+    };
 
-    onPlaylistStringChange(event, newString) {
-        this.setState({addPlaylistString: newString});
+    constructor(props) {
+        super(props);
+        this.state = {
+            currentPlaylist: null,
+            dialogOpened: false,
+            newPlaylistUrl: "",
+            newLiveVideoUrl: ""
+        };
     }
 
     render() {
@@ -112,12 +70,12 @@ class Playlists extends React.Component {
         const actions = [
             <FlatButton
                 label="Close"
-                onClick={() => this.handleDialogClose}
+                onClick={this.handleDialogClose}
             />,
             <FlatButton
                 label="Add"
                 primary={true}
-                onClick={() => this.handleAddPlaylist}
+                onClick={this.handleAddPlaylist}
             />,
         ];
 
@@ -129,7 +87,7 @@ class Playlists extends React.Component {
                     socket.changePlaylistVideo(event.currentTarget.getAttribute('video'));
                 }}/>;
             else
-                display = <LivePlaylistDisplay history={this.props.liveHistory} changeVideo={(event) => {
+                display = <LiveDisplay history={this.props.liveHistory} changeVideo={(event) => {
                     socket.setLiveVideo(event.currentTarget.getAttribute('video'));
                 }}/>;
 
@@ -137,15 +95,15 @@ class Playlists extends React.Component {
         let liveInput = null;
         if (this.props.currentPlaylist === LIVE) {
             liveInput =
-                <form onSubmit={() => this.handleSetLiveVideo} className="live-form fl">
+                <form onSubmit={this.handleSetLiveVideo} className="live-form fl">
                     <TextField
-                        onChange={() => this.handleLiveStringChanged}
-                        value={this.state.liveVideoString}
+                        onChange={this.handleNewLiveVideoUrlChanged}
+                        value={this.state.newLiveVideoUrl}
                         fullWidth={true}
                         hintText="Video id or url"
                         className="fl-grow"
                     />
-                    <IconButton onClick={() => this.handleSetLiveVideo}><FontIcon
+                    <IconButton onClick={this.handleSetLiveVideo}><FontIcon
                         className="material-icons">send</FontIcon></IconButton>
                 </form>;
         }
@@ -157,12 +115,12 @@ class Playlists extends React.Component {
                     fullWidth={true}
                     floatingLabelText="Playlist"
                     value={this.props.currentPlaylist}
-                    onChange={() => this.handlePlaylistChange}
+                    onChange={this.handlePlaylistChange}
                 >
                     {playlistsItems}
                 </SelectField>
                 {liveInput}
-                <FloatingActionButton onClick={() => this.handleAddPlaylistDialogFAB}
+                <FloatingActionButton onClick={this.handleAddPlaylistDialogFAB}
                                       style={{position: "absolute", bottom: 20, right: 20, zIndex: 100}}>
                     <ContentAdd/>
                 </FloatingActionButton>
@@ -174,8 +132,8 @@ class Playlists extends React.Component {
                     open={this.state.dialogOpened}
                 >
                     <TextField
-                        onChange={() => this.onPlaylistStringChange}
-                        value={this.state.addPlaylistString}
+                        onChange={this.handleNewPlaylistUrlChanged}
+                        value={this.state.newPlaylistUrl}
                         fullWidth={true}
                         hintText="Playlist ID or URL"
                     />

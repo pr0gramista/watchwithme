@@ -48,12 +48,12 @@ class UsernameDialog extends React.Component {
         const actions = [
             <FlatButton
                 label="Let's stay anonymous"
-                onClick={() => this.handleGoAnonymously}
+                onClick={() => this.handleGoAnonymously()}
             />,
             <FlatButton
                 label="Set"
                 primary={true}
-                onClick={() => this.handleSetNickname}
+                onClick={() => this.handleSetNickname()}
             />,
         ];
 

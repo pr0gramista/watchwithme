@@ -18,15 +18,15 @@ export default class Player extends React.Component {
         socket.io.on('playlist_video_changed', this.onPlaylistVideoChanged);
     }
 
-    suppress() {
+    suppress = () => {
         this.ignore = true;
         let f = function () {
             this.ignore = false
         }.bind(this);
         setTimeout(f, 300)
-    }
+    };
 
-    onLiveVideoChanged(video) {
+    onLiveVideoChanged = (video) => {
         this.setState({
             video: video
         });
@@ -42,38 +42,38 @@ export default class Player extends React.Component {
             }
         };
         setVideoEventually(video.id);
-    }
+    };
 
-    onPlaylistVideoChanged(video) {
+    onPlaylistVideoChanged = (video) => {
         this.setState({
             video: video
         });
         this.player.loadVideoById(video.id);
         this.suppress();
-    }
+    };
 
-    onPlay(time) {
+    onPlay = (time) => {
         const player = this.player;
         if (Math.abs(player.getCurrentTime() - time) > 3 || player.getPlayerState() !== 1) {
             player.seekTo(time);
             player.playVideo();
             this.suppress()
         }
-    }
+    };
 
-    onPause(time) {
+    onPause = (time) => {
         const player = this.player;
         if (Math.abs(player.getCurrentTime() - time) > 3 || player.getPlayerState() !== 2) {
             player.seekTo(time);
             player.pauseVideo();
             this.suppress()
         }
-    }
+    };
 
-    onPlayerReady(event) {
-    }
+    onPlayerReady = (event) => {
+    };
 
-    onPlayerStateChange(event) {
+    onPlayerStateChange = (event) => {
         if (event.data === 0) { // Ended
             socket.getNextVideoIfPossible(this.state.video.id);
             return;
@@ -91,7 +91,7 @@ export default class Player extends React.Component {
                 socket.play(this.player.getCurrentTime());
             }
         }
-    }
+    };
 
     componentDidMount() {
         const tag = document.createElement('script');
