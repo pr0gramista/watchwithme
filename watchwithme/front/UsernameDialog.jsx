@@ -24,10 +24,6 @@ class UsernameDialog extends React.Component {
             open: cookieNickname === undefined,
             newNickname: "",
         };
-
-        this.handleSetNickname = this.handleSetNickname.bind(this);
-        this.handleGoAnonymously = this.handleGoAnonymously.bind(this);
-        this.onNicknameChange = this.onNicknameChange.bind(this);
     }
 
     onNicknameChange(event, value) {
@@ -52,12 +48,12 @@ class UsernameDialog extends React.Component {
         const actions = [
             <FlatButton
                 label="Let's stay anonymous"
-                onClick={this.handleGoAnonymously}
+                onClick={() => this.handleGoAnonymously}
             />,
             <FlatButton
                 label="Set"
                 primary={true}
-                onClick={this.handleSetNickname}
+                onClick={() => this.handleSetNickname}
             />,
         ];
 
@@ -70,7 +66,7 @@ class UsernameDialog extends React.Component {
                 contentStyle={style}
             >
                 <TextField
-                    onChange={this.onNicknameChange}
+                    onChange={() => this.onNicknameChange}
                     value={this.state.newNickname}
                     fullWidth={true}
                     hintText="Nickname"

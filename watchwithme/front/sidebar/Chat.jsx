@@ -19,9 +19,6 @@ class Chat extends React.Component {
         this.state = {
             message: ''
         };
-
-        this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
-        this.handleChatMessage = this.handleChatMessage.bind(this);
     }
 
     handleChatMessage(event) {
@@ -46,10 +43,11 @@ class Chat extends React.Component {
                     {chatMessages}
                 </ul>
                 <div id="chat-form" className="fl">
-                    <form onSubmit={this.handleChatMessage} className="chat-form">
-                        <TextField hintText="Message" value={this.state.message} onChange={this.handleChatMessageChange}
+                    <form onSubmit={() => this.handleChatMessage} className="chat-form">
+                        <TextField hintText="Message" value={this.state.message}
+                                   onChange={() => this.handleChatMessageChange}
                                    className="fl-grow"/>
-                        <IconButton onClick={this.handleChatMessage}><FontIcon
+                        <IconButton onClick={() => this.handleChatMessage}><FontIcon
                             className="material-icons">send</FontIcon></IconButton>
                     </form>
                 </div>

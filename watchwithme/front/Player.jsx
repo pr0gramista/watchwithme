@@ -12,14 +12,6 @@ export default class Player extends React.Component {
         this.stopFirst = false;
         this.ignore = false;
 
-        this.onPlayerReady = this.onPlayerReady.bind(this);
-        this.onPlayerStateChange = this.onPlayerStateChange.bind(this);
-        this.onLiveVideoChanged = this.onLiveVideoChanged.bind(this);
-        this.onPlaylistVideoChanged = this.onPlaylistVideoChanged.bind(this);
-        this.onPlay = this.onPlay.bind(this);
-        this.onPause = this.onPause.bind(this);
-        this.suppress = this.suppress.bind(this);
-
         socket.io.on('play', this.onPlay);
         socket.io.on('pause', this.onPause);
         socket.io.on('live_video_changed', this.onLiveVideoChanged);

@@ -65,14 +65,6 @@ class Playlists extends React.Component {
             addPlaylistString: "",
             liveVideoString: ""
         };
-
-        this.handleDialogClose = this.handleDialogClose.bind(this);
-        this.handleAddPlaylist = this.handleAddPlaylist.bind(this);
-        this.handlePlaylistChange = this.handlePlaylistChange.bind(this);
-        this.onPlaylistStringChange = this.onPlaylistStringChange.bind(this);
-        this.handleAddPlaylistDialogFAB = this.handleAddPlaylistDialogFAB.bind(this);
-        this.handleLiveStringChanged = this.handleLiveStringChanged.bind(this);
-        this.handleSetLiveVideo = this.handleSetLiveVideo.bind(this);
     }
 
     handlePlaylistChange(event, index, value) {
@@ -120,12 +112,12 @@ class Playlists extends React.Component {
         const actions = [
             <FlatButton
                 label="Close"
-                onClick={this.handleDialogClose}
+                onClick={() => this.handleDialogClose}
             />,
             <FlatButton
                 label="Add"
                 primary={true}
-                onClick={this.handleAddPlaylist}
+                onClick={() => this.handleAddPlaylist}
             />,
         ];
 
@@ -145,15 +137,15 @@ class Playlists extends React.Component {
         let liveInput = null;
         if (this.props.currentPlaylist === LIVE) {
             liveInput =
-                <form onSubmit={this.handleSetLiveVideo} className="live-form fl">
+                <form onSubmit={() => this.handleSetLiveVideo} className="live-form fl">
                     <TextField
-                        onChange={this.handleLiveStringChanged}
+                        onChange={() => this.handleLiveStringChanged}
                         value={this.state.liveVideoString}
                         fullWidth={true}
                         hintText="Video id or url"
                         className="fl-grow"
                     />
-                    <IconButton onClick={this.handleSetLiveVideo}><FontIcon
+                    <IconButton onClick={() => this.handleSetLiveVideo}><FontIcon
                         className="material-icons">send</FontIcon></IconButton>
                 </form>;
         }
@@ -165,12 +157,12 @@ class Playlists extends React.Component {
                     fullWidth={true}
                     floatingLabelText="Playlist"
                     value={this.props.currentPlaylist}
-                    onChange={this.handlePlaylistChange}
+                    onChange={() => this.handlePlaylistChange}
                 >
                     {playlistsItems}
                 </SelectField>
                 {liveInput}
-                <FloatingActionButton onClick={this.handleAddPlaylistDialogFAB}
+                <FloatingActionButton onClick={() => this.handleAddPlaylistDialogFAB}
                                       style={{position: "absolute", bottom: 20, right: 20, zIndex: 100}}>
                     <ContentAdd/>
                 </FloatingActionButton>
@@ -182,7 +174,7 @@ class Playlists extends React.Component {
                     open={this.state.dialogOpened}
                 >
                     <TextField
-                        onChange={this.onPlaylistStringChange}
+                        onChange={() => this.onPlaylistStringChange}
                         value={this.state.addPlaylistString}
                         fullWidth={true}
                         hintText="Playlist ID or URL"
