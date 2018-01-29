@@ -3,7 +3,6 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
-  - "nightly"
 env:
   - FLASK_APP=watchwithme/app.py FLASK_DEBUG=1
 install:
