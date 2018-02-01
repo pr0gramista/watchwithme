@@ -1,4 +1,4 @@
-# Watch With Me ![Travis CI status](https://travis-ci.org/pr0gramista/watchwithme.svg?branch=master)
+# Watch With Me [![Build Status](https://travis-ci.org/pr0gramista/watchwithme.svg?branch=master)](https://travis-ci.org/pr0gramista/watchwithme)
 Watch with me is an app that lets you watch YouTube videos together.
 
 ### Store you playlists
