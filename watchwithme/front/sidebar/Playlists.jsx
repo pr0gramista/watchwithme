@@ -9,6 +9,7 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import FlatButton from 'material-ui/FlatButton';
+import Snackbar from 'material-ui/Snackbar';
 import {setCurrentPlaylist} from '../store/actions.jsx';
 import socket from '../Socket.jsx';
 import LiveDisplay from './playlist/LiveDisplay.jsx';
@@ -26,28 +27,47 @@ class Playlists extends React.Component {
         }
         this.props.setCurrentPlaylist(value);
     };
+
     /* Setting new live video */
     handleNewLiveVideoUrlChanged = (event, newString) => {
         this.setState({newLiveVideoUrl: newString});
     };
+
     handleSetLiveVideo = () => {
         socket.setLiveVideo(this.state.newLiveVideoUrl);
         this.setState({newLiveVideoUrl: ""});
     };
+
     /* Adding playlist (inside dialog) */
     handleAddPlaylist = () => {
         socket.addPlaylist(this.state.newPlaylistUrl);
         this.setState({dialogOpened: false, newPlaylistUrl: ""});
     };
+
     handleNewPlaylistUrlChanged = (event, newString) => {
         this.setState({newPlaylistUrl: newString});
     };
+
     /* Dialog */
     handleAddPlaylistDialogFAB = () => {
         this.setState({dialogOpened: true});
     };
+
     handleDialogClose = () => {
         this.setState({dialogOpened: false});
+    };
+
+    handleSnackbarClose = () => {
+        this.setState({
+            showSnackbar: false
+        });
+    };
+
+    showSnackbar = (text) => {
+        this.setState({
+            showSnackbar: true,
+            snackbarText: text
+        });
     };
 
     constructor(props) {
@@ -56,8 +76,14 @@ class Playlists extends React.Component {
             currentPlaylist: null,
             dialogOpened: false,
             newPlaylistUrl: "",
-            newLiveVideoUrl: ""
+            newLiveVideoUrl: "",
+            showSnackbar: false,
+            snackbarText: ""
         };
+
+        socket.io.on('playlist_added', (playlist) => {
+            this.showSnackbar("Playlist " + playlist.title + " added");
+        });
     }
 
     render() {
@@ -138,6 +164,12 @@ class Playlists extends React.Component {
                         hintText="Playlist ID or URL"
                     />
                 </Dialog>
+                <Snackbar
+                    open={this.state.showSnackbar}
+                    message={this.state.snackbarText}
+                    autoHideDuration={4000}
+                    onRequestClose={this.handleSnackbarClose}
+                />
             </div>
         );
     }
