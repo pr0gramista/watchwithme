@@ -1,0 +1,143 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+$small: 600px;
+
+#app {
+  height: 100vh;
+
+  @media (max-width: $small) {
+    height: auto;
+  }
+}
+
+#main {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+
+  @media (max-width: $small) {
+    flex-direction: column;
+  }
+}
+
+#player {
+  flex-grow: 1;
+  height: 100%;
+
+  @media (max-width: $small) {
+    width: 100%;
+    height: 100vh;
+  }
+}
+
+#sidebar {
+  flex-shrink: 0;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 300px;
+  height: 100%;
+  background-color: #283593;
+  color: #FFF;
+
+  @media (max-width: $small) {
+    width: 100%;
+    min-height: 600px;
+  }
+}
+
+.fl {
+  display: flex;
+  flex-direction: row;
+  &-grow {
+    flex-grow: 1;
+  }
+}
+
+#playlist {
+  padding: 4px 8px;
+  overflow-y: auto;
+  min-height: 300px;
+
+  #live-form {
+    overflow: hidden;
+    background: #303F9F;
+  }
+
+  ul.playlist {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+
+    li.video {
+      position: relative;
+      list-style: none;
+      margin: 8px 0;
+      cursor: pointer;
+
+      h1 {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        margin: 0;
+        padding: 8px;
+        font-size: 20px;
+        background: rgba(0, 0, 0, 0.3);
+        text-shadow: 0 2px black;
+      }
+
+      img {
+        width: 100%;
+      }
+    }
+  }
+}
+
+#chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  #messages {
+    padding: 0;
+    margin: 0;
+    overflow-y: hidden;
+    height: 100%;
+
+    &:hover {
+      overflow: auto;
+    }
+
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  #chat-form {
+    overflow: hidden;
+    background: #303F9F;
+  }
+
+  .chat-form {
+    width: 100%;
+    height: 100%;
+    padding-left: 5px;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .chat-message {
+    list-style: none;
+    display: block;
+    padding: 2px 8px;
+  }
+}
