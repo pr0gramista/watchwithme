@@ -26,7 +26,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-ASGI_APPLICATION = "player.routing.application"
+ASGI_APPLICATION = "watchwithme.routing.application"
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'assets'),

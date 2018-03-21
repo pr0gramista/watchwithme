@@ -4,19 +4,29 @@ let sock;
 let room_id;
 let store;
 
+let ws;
+
 export default class socket {
     static get io() {
         return sock;
     }
 
     static init(_room_id, _socketio, _store) {
+        ws = new WebSocket('ws://' + window.location.host + '/ws/chat/')
+
         sock = _socketio;
         room_id = _room_id;
         store = _store;
 
-        socket.io.on('message_sent', function (message) {
+        /* socket.io.on('message_sent', function (message) {
             store.dispatch(receiveMessage(message));
-        });
+        }); */
+        ws.onmessage = function(body) {
+            const data = JSON.parse(body.data);
+            const message = data['message'];
+            store.dispatch(receiveMessage(message));
+        };
+
         socket.io.on('playlist_added', function (playlist) {
             store.dispatch(addPlaylist(playlist));
         });
@@ -56,7 +66,10 @@ export default class socket {
     }
 
     static sendChatMessage(message) {
-        sock.emit('send_message', room_id, store.getState().nickname + ": " + message);
+        // sock.emit('send_message', room_id, store.getState().nickname + ": " + message);
+        ws.send(JSON.stringify({
+            'message': message
+        }));
     }
 
     static addPlaylist(url) {
