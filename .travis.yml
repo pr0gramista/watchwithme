@@ -1,0 +1,9 @@
+language: python
+python:
+  - "3.5"
+  - "3.6"
+install:
+  - npm install
+  - pip install -r requirements.txt
+  - npm run build
+script: python manage.py test
