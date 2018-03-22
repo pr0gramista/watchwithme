@@ -16,3 +16,4 @@ six==1.11.0
 Twisted==17.9.0
 txaio==2.9.0
 zope.interface==4.4.3
+channels-redis==2.1.1
